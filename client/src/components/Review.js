@@ -1,9 +1,10 @@
 import { Card, Button } from 'react-bootstrap';
+import toiletpic from '../resources/images/temp-toilet.jpeg';
 
-function Review() {
+const Review = ({ account, date, toiletlocation, review, photos}) => {
     return (
-        <Card style={{ width: '20rem' }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
+        <Card className="w-50">
+            <Card.Img variant="top" src={toiletpic} />
             <Card.Body>
                 <Card.Text>Account Date Location</Card.Text>
                 <Card.Text>Stars</Card.Text>
@@ -13,7 +14,6 @@ function Review() {
                 <Button variant="link">Comments</Button>
             </Card.Body>
         </Card>
-
     )
 }
 
