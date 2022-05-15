@@ -2,21 +2,21 @@ import { useState } from "react";
 import { Container, Button, Form, Modal } from "react-bootstrap";
 
 import NavBar from "../components/NavBar";
-import Login from "../components/Login";
+import Registration from "../components/Registration";
 //import Review from "../components/Review";
 //import NewReview from "../components/NewReview";
 //import "./Home.css";
 
-function LoginPage() {
+function RegistrationPage() {
 
     return (
         <div>
             <NavBar />
-            <Login />
-            <a href = "/registrationpage">Don't Have an Account? Register</a>
+            <Registration />
+            <a href = "/loginpage">Have an Account? Login</a>
         </div> 
         
     )
 }
 
-export default LoginPage;
+export default RegistrationPage;
