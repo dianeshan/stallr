@@ -5,7 +5,7 @@ function NavBar() {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="#home">Stallr</Navbar.Brand>
+                <Navbar.Brand href="/">Stallr</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
@@ -16,7 +16,7 @@ function NavBar() {
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
-                        Signed in as: <a href="#login">Poop</a>
+                        Signed in as: <a href="/loginpage">Poop</a>
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Container>
