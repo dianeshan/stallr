@@ -16,7 +16,7 @@ function NavBar() {
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
-                        Signed in as: <a href="/loginpage">Poop</a>
+                        Signed in as: <a href="/login">Poop</a>
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Container>

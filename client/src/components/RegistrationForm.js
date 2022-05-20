@@ -1,6 +1,6 @@
 import { Form, Button } from 'react-bootstrap';
 
-function Registration() {
+function RegistrationForm() {
     return (
         <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -37,4 +37,4 @@ function Registration() {
     )
 }
 
-export default Registration;
+export default RegistrationForm;

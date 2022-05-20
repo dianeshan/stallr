@@ -1,6 +1,6 @@
 import { Form, Button } from 'react-bootstrap';
 
-function Login() {
+function LoginForm() {
     return (
         <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -26,4 +26,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default LoginForm;
