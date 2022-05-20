@@ -10,10 +10,10 @@ const ObjectId = require("mongodb").ObjectId;
  
  
 // get a list of all the posts
-postRoutes.route("/post").get(function (req, res) {
+postRoutes.route("/review").get(function (req, res) {
  let db_connect = dbo.getDb("toilets");
  db_connect
-   .collection("posts")
+   .collection("reviews")
    .find({})
    .toArray(function (err, result) {
      if (err) throw err;
@@ -22,11 +22,11 @@ postRoutes.route("/post").get(function (req, res) {
 });
  
 // gets a single post by id
-postRoutes.route("/post/:id").get(function (req, res) {
+postRoutes.route("/review/:id").get(function (req, res) {
  let db_connect = dbo.getDb();
  let myquery = { _id: ObjectId( req.params.id )};
  db_connect
-     .collection("posts")
+     .collection("reviews")
      .findOne(myquery, function (err, result) {
        if (err) throw err;
        res.json(result);
@@ -34,14 +34,14 @@ postRoutes.route("/post/:id").get(function (req, res) {
 });
  
 // create a new post
-postRoutes.route("/post/add").post(function (req, response) {
+postRoutes.route("/review/add").post(function (req, response) {
  let db_connect = dbo.getDb();
  let myobj = {
    name: req.body.name,
    position: req.body.position,
    level: req.body.level,
  };
- db_connect.collection("posts").insertOne(myobj, function (err, res) {
+ db_connect.collection("reviews").insertOne(myobj, function (err, res) {
    if (err) throw err;
    response.json(res);
  });
