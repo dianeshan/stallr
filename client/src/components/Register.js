@@ -4,8 +4,12 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import { Card, Button } from "react-bootstrap";
+import GoogleLogin from 'react-google-login';
 
+// import { loadGoogleScript } from '../common/GoogleLogin';
 import AuthService from "../services/auth.service";
+
+const clientId = "216887874666-d12ehqadnp082rbfjjbebeibstj0j1gt.apps.googleusercontent.com"
 
 const required = (value) => {
   if (!value) {
@@ -16,6 +20,7 @@ const required = (value) => {
     );
   }
 };
+
 const validEmail = (value) => {
   if (!isEmail(value)) {
     return (
@@ -25,6 +30,7 @@ const validEmail = (value) => {
     );
   }
 };
+
 const vusername = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
@@ -34,6 +40,7 @@ const vusername = (value) => {
     );
   }
 };
+
 const vpassword = (value) => {
   if (value.length < 6 || value.length > 40) {
     return (
@@ -43,6 +50,7 @@ const vpassword = (value) => {
     );
   }
 };
+
 const Register = () => {
   const form = useRef();
   const checkBtn = useRef();
@@ -51,6 +59,31 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
+
+  const handleFailure = (result) => {
+    console.log(result);
+  };
+
+  const handleGoogleReg = async (googleData) => {
+    const profile = googleData.getBasicProfile();
+    AuthService.register(profile.getName(), profile.getEmail(), profile.getId()).then(
+      (response) => {
+        setMessage(response.data.message);
+        setSuccessful(true);
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+        setSuccessful(false);
+      }
+    );
+     
+  };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -138,6 +171,15 @@ const Register = () => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+        <div className="py-2">or</div>
+        <GoogleLogin
+              clientId={clientId}
+              buttonText="Sign up with Google"
+              onSuccess={handleGoogleReg}
+              onFailure={handleFailure}
+              cookiePolicy={'single_host_origin'}
+              theme="dark"
+            ></GoogleLogin>
       </Card>
     </div>
   );

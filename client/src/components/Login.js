@@ -1,11 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef} from "react";
 import { useNavigate } from 'react-router-dom'; 
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import GoogleLogin from 'react-google-login';
 
 import AuthService from "../services/auth.service";
-import { Button, Card} from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
+
+const clientId = "216887874666-d12ehqadnp082rbfjjbebeibstj0j1gt.apps.googleusercontent.com"
 
 const required = (value) => {
   if (!value) {
@@ -26,14 +29,29 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
+  const handleFailure = (result) => {
+    console.log(result);
   };
 
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
+  const handleGoogleLogin = async (googleData) => {
+    const profile = googleData.getBasicProfile();
+    AuthService.login(profile.getName(), profile.getId()).then(
+        () => {
+          navigate("/profile");
+          window.location.reload();
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          setLoading(false);
+          setMessage(resMessage);
+        }
+      );
+     
   };
 
   const handleLogin = (e) => {
@@ -82,7 +100,7 @@ const Login = () => {
             className="form-control"
             name="username"
             value={username}
-            onChange={onChangeUsername}
+            onChange={(e) => setUsername(e.target.value)}
             validations={[required]}
           />
         </div>
@@ -93,7 +111,7 @@ const Login = () => {
             className="form-control"
             name="password"
             value={password}
-            onChange={onChangePassword}
+            onChange={(e) => setPassword(e.target.value)}
             validations={[required]}
           />
         </div>
@@ -114,6 +132,15 @@ const Login = () => {
         )}
         <CheckButton style={{ display: "none" }} ref={checkBtn} />
       </Form>
+      <div className="py-2">or</div>
+      <GoogleLogin
+              clientId={clientId}
+              buttonText="Log in with Google"
+              onSuccess={handleGoogleLogin}
+              onFailure={handleFailure}
+              cookiePolicy={'single_host_origin'}
+              theme="dark"
+            ></GoogleLogin>
     </Card>
   );
 };
