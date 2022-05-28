@@ -1,14 +1,14 @@
-import React, { useState, useRef} from "react";
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import GoogleLogin from 'react-google-login';
+import GoogleLogin from "react-google-login";
 
 import AuthService from "../services/auth.service";
 import { Button, Card } from "react-bootstrap";
 
-const clientId = "216887874666-d12ehqadnp082rbfjjbebeibstj0j1gt.apps.googleusercontent.com"
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const required = (value) => {
   if (!value) {
@@ -36,22 +36,21 @@ const Login = () => {
   const handleGoogleLogin = async (googleData) => {
     const profile = googleData.getBasicProfile();
     AuthService.login(profile.getName(), profile.getId()).then(
-        () => {
-          navigate("/profile");
-          window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setLoading(false);
-          setMessage(resMessage);
-        }
-      );
-     
+      () => {
+        navigate("/profile");
+        window.location.reload();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setLoading(false);
+        setMessage(resMessage);
+      }
+    );
   };
 
   const handleLogin = (e) => {
@@ -83,9 +82,7 @@ const Login = () => {
 
   return (
     <Card className="card-container">
-      <Card.Title>
-        Share your toilet experiences!
-      </Card.Title>
+      <Card.Title>Share your toilet experiences!</Card.Title>
       {/* <img
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         alt="profile-img"
@@ -134,13 +131,13 @@ const Login = () => {
       </Form>
       <div className="py-2">or</div>
       <GoogleLogin
-              clientId={clientId}
-              buttonText="Log in with Google"
-              onSuccess={handleGoogleLogin}
-              onFailure={handleFailure}
-              cookiePolicy={'single_host_origin'}
-              theme="dark"
-            ></GoogleLogin>
+        clientId={clientId}
+        buttonText="Log in with Google"
+        onSuccess={handleGoogleLogin}
+        onFailure={handleFailure}
+        cookiePolicy={"single_host_origin"}
+        theme="dark"
+      ></GoogleLogin>
     </Card>
   );
 };

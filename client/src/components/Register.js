@@ -4,12 +4,11 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import { Card, Button } from "react-bootstrap";
-import GoogleLogin from 'react-google-login';
+import GoogleLogin from "react-google-login";
 
-// import { loadGoogleScript } from '../common/GoogleLogin';
 import AuthService from "../services/auth.service";
 
-const clientId = "216887874666-d12ehqadnp082rbfjjbebeibstj0j1gt.apps.googleusercontent.com"
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const required = (value) => {
   if (!value) {
@@ -66,7 +65,11 @@ const Register = () => {
 
   const handleGoogleReg = async (googleData) => {
     const profile = googleData.getBasicProfile();
-    AuthService.register(profile.getName(), profile.getEmail(), profile.getId()).then(
+    AuthService.register(
+      profile.getName(),
+      profile.getEmail(),
+      profile.getId()
+    ).then(
       (response) => {
         setMessage(response.data.message);
         setSuccessful(true);
@@ -82,7 +85,6 @@ const Register = () => {
         setSuccessful(false);
       }
     );
-     
   };
 
   const handleRegister = (e) => {
@@ -109,6 +111,7 @@ const Register = () => {
       );
     }
   };
+
   return (
     <div className="col-md-12">
       <Card className="card-container">
@@ -117,7 +120,9 @@ const Register = () => {
           alt="profile-img"
           className="profile-img-card"
         /> */}
-        <Card.Title>Sign up to experience toilet stalls from all over the world</Card.Title>
+        <Card.Title>
+          Sign up to experience toilet stalls from all over the world
+        </Card.Title>
         <Form onSubmit={handleRegister} ref={form}>
           {!successful && (
             <div>
@@ -162,7 +167,9 @@ const Register = () => {
           {message && (
             <div className="form-group">
               <div
-                className={ successful ? "alert alert-success" : "alert alert-danger" }
+                className={
+                  successful ? "alert alert-success" : "alert alert-danger"
+                }
                 role="alert"
               >
                 {message}
@@ -173,13 +180,13 @@ const Register = () => {
         </Form>
         <div className="py-2">or</div>
         <GoogleLogin
-              clientId={clientId}
-              buttonText="Sign up with Google"
-              onSuccess={handleGoogleReg}
-              onFailure={handleFailure}
-              cookiePolicy={'single_host_origin'}
-              theme="dark"
-            ></GoogleLogin>
+          clientId={clientId}
+          buttonText="Sign up with Google"
+          onSuccess={handleGoogleReg}
+          onFailure={handleFailure}
+          cookiePolicy={"single_host_origin"}
+          theme="dark"
+        ></GoogleLogin>
       </Card>
     </div>
   );
