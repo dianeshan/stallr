@@ -2,7 +2,7 @@ const db = require("../models");
 const Review = db.reviews;
 
 // Create and Save a new review
-exports.create = (req, res) => {
+exports.createReview = (req, res) => {
   // Validate request
   if (!req.body.title) {
     res.status(400).send({ message: "Can't be empty!" });
@@ -30,7 +30,7 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all reviews from the database.
-exports.findAll = (req, res) => {
+exports.findAllReviews = (req, res) => {
   const description = req.query.description;
   var condition = description
     ? { title: { $regex: new RegExp(description), $options: "i" } }
@@ -49,7 +49,7 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single review with an id
-exports.findOne = (req, res) => {
+exports.findOneReview = (req, res) => {
   const id = req.params.id;
 
   Review.findById(id)
@@ -68,7 +68,7 @@ exports.findOne = (req, res) => {
 };
 
 // Update a Review by the id in the request
-exports.update = (req, res) => {
+exports.updateReview = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Cannot be empty!",
@@ -77,7 +77,7 @@ exports.update = (req, res) => {
 
   const id = req.params.id;
 
-  Review.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  Review.findByIdAndUpdateReview(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -93,7 +93,7 @@ exports.update = (req, res) => {
 };
 
 // Delete a review with the specified id in the request
-exports.delete = (req, res) => {
+exports.deleteReview = (req, res) => {
   const id = req.params.id;
 
   Review.findByIdAndRemove(id, { useFindAndModify: false })
@@ -116,7 +116,7 @@ exports.delete = (req, res) => {
 };
 
 // Delete all Reviews from the database.
-exports.deleteAll = (req, res) => {
+exports.deleteAllReviews = (req, res) => {
   Review.deleteMany({})
     .then((data) => {
       res.send({
@@ -132,7 +132,7 @@ exports.deleteAll = (req, res) => {
 };
 
 // Find all published reviews
-exports.findAllPublished = (req, res) => {
+exports.findAllPublishedReviews = (req, res) => {
   Review.find({ published: true })
     .then((data) => {
       res.send(data);
