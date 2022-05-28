@@ -6,7 +6,6 @@ import { isEmail } from "validator";
 import { Card, Button } from "react-bootstrap";
 import GoogleLogin from "react-google-login";
 
-// import { loadGoogleScript } from '../common/GoogleLogin';
 import AuthService from "../services/auth.service";
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;

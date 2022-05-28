@@ -1,4 +1,5 @@
-const config = require("../config/auth.config");
+require("dotenv").config({ path: "../config.env" });
+const config = process.env.AUTH_SECRET;
 const db = require("../models");
 
 const User = db.user;
@@ -80,7 +81,7 @@ exports.signin = (req, res) => {
           message: "Invalid Password!",
         });
       }
-      var token = jwt.sign({ id: user.id }, config.secret, {
+      var token = jwt.sign({ id: user.id }, config, {
         expiresIn: 86400, // 24 hours
       });
       var authorities = [];
