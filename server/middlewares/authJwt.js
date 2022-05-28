@@ -3,6 +3,7 @@ const config = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
@@ -16,6 +17,7 @@ verifyToken = (req, res, next) => {
     next();
   });
 };
+
 isAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -24,7 +26,7 @@ isAdmin = (req, res, next) => {
     }
     Role.find(
       {
-        _id: { $in: user.roles }
+        _id: { $in: user.roles },
       },
       (err, roles) => {
         if (err) {
@@ -43,8 +45,10 @@ isAdmin = (req, res, next) => {
     );
   });
 };
+
 const authJwt = {
   verifyToken,
-  isAdmin
+  isAdmin,
 };
+
 module.exports = authJwt;

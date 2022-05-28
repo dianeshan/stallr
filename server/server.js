@@ -6,36 +6,29 @@ require("dotenv").config({ path: "./config.env" });
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3001"
+  origin: "http://localhost:3001",
 };
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
 app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
 const dbConfig = process.env.ATLAS_URI;
-// const client = new MongoClient(dbConfig, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
 const Role = db.role;
 
 db.mongoose
-  .connect( dbConfig, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(dbConfig, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log("Successfully connect to MongoDB.");
+    console.log("Successfully connected to MongoDB.");
     initial();
   })
-  .catch(err => {
+  .catch((err) => {
     console.error("Connection error", err);
     process.exit();
   });
 
-// simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Stallr." });
 });
@@ -43,8 +36,8 @@ app.get("/", (req, res) => {
 // routes
 require("./routes/auth.routes")(app);
 require("./routes/user.routes")(app);
+require("./routes/review.routes")(app);
 
-// set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
@@ -54,22 +47,20 @@ function initial() {
   Role.estimatedDocumentCount((err, count) => {
     if (!err && count === 0) {
       new Role({
-        name: "user"
-      }).save(err => {
+        name: "user",
+      }).save((err) => {
         if (err) {
           console.log("error", err);
         }
-
         console.log("added 'user' to roles collection");
       });
 
       new Role({
-        name: "admin"
-      }).save(err => {
+        name: "admin",
+      }).save((err) => {
         if (err) {
           console.log("error", err);
         }
-
         console.log("added 'admin' to roles collection");
       });
     }
