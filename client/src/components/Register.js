@@ -160,7 +160,7 @@ const Register = () => {
                 />
               </div>
               <div className="form-group pt-3">
-                <Button variant="primary">Sign Up</Button>
+                <Button variant="primary" type="submit">Sign Up</Button>
               </div>
             </div>
           )}

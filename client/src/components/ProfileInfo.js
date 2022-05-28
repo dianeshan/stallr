@@ -1,14 +1,16 @@
 import { Container, Row, Col, Nav } from "react-bootstrap";
 
+import AuthService from "../services/auth.service";
 import Pfp from "./Pfp"
 
 function ProfileInfo() {
 
+    const currentUser = AuthService.getCurrentUser();
     return (
         <div>
             <Container style={{ marginTop: 100 }}>
                 <Row style={{marginBottom: 10, fontSize: 20}}>
-                    <Col>TheHyperLeafeon</Col>
+                    <Col>{currentUser.username}</Col>
                     <Col></Col>
                 </Row>
                 <Row>

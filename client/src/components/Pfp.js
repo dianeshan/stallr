@@ -1,12 +1,16 @@
 import { Figure } from "react-bootstrap";
 
+import AuthService from "../services/auth.service";
+
 function Pfp() {
+
+    const currentUser = AuthService.getCurrentUser();
     return (
         <Figure>
             <Figure.Image
                 width={150}
                 height={150}
-                src={process.env.PUBLIC_URL + "/all_hail_gorb_pfp.png"}
+                src={currentUser.pfp}
                 roundedCircle={true}
             />
         </Figure>
