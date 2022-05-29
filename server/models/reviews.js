@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ImageSchema = new Schema({
-  url: String,
-  filename: String,
-});
-
-const opts = { toJSON: { virtuals: true } };
+const opts =
+  ("toJSON",
+  function () {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+  });
 
 const ReviewSchema = new Schema(
   {
@@ -32,7 +33,12 @@ const ReviewSchema = new Schema(
       required: true,
       default: Date.now(),
     },
-    images: [ImageSchema],
+    images: [
+      {
+        data: Buffer,
+        contentType: String,
+      },
+    ],
     comments: [
       {
         type: Schema.Types.ObjectId,
@@ -44,6 +50,7 @@ const ReviewSchema = new Schema(
       required: true,
     },
   },
+  { timestamps: true },
   opts
 );
 
