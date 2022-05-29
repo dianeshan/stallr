@@ -1,5 +1,9 @@
 require("dotenv").config({ path: "../config.env" });
+const fs = require("fs");
+const path = require("path");
+
 const config = process.env.AUTH_SECRET;
+
 const db = require("../models");
 
 const User = db.user;
@@ -8,11 +12,18 @@ const Role = db.role;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
+    bio: "fill me in",
+    pfp: {
+      data: fs.readFileSync(
+        path.join(__dirname + "/uploads/default-stallr-pfp.png")
+      ),
+      contentType: "image/png",
+    },
   });
   user.save((err, user) => {
     if (err) {
@@ -93,6 +104,11 @@ exports.signin = (req, res) => {
         username: user.username,
         email: user.email,
         roles: authorities,
+        bio: user.bio,
+        pfp: {
+          data: user.pfp.data.toString("base64"),
+          contentType: user.pfp.contentType,
+        },
         accessToken: token,
       });
     });

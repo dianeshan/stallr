@@ -4,6 +4,7 @@ import { Container, Modal, Button } from "react-bootstrap";
 // import UserService from "../services/user.service";
 import Review from "./Review";
 import NewReview from "./NewReview";
+import FileUpload from "./FileUpload";
 
 const Home = () => {
   // const [content, setContent] = useState("");
@@ -30,6 +31,7 @@ const Home = () => {
       <div className="centered">
         <Review />
       </div>
+      <FileUpload />
     </Container>
   );
 };
