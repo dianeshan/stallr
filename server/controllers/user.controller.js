@@ -1,5 +1,5 @@
 const db = require("../models");
-const User = db.users;
+const User = db.user;
 
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
@@ -11,6 +11,19 @@ exports.userBoard = (req, res) => {
 
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
+};
+
+exports.findAllUsers = (req, res) => {
+  User.find()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving all users.",
+      });
+    });
 };
 
 exports.updateUser = (req, res) => {
