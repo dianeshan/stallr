@@ -30,6 +30,10 @@ const UserSchema = new Schema(
         ref: "User",
       },
     ],
+    bio: {
+      type: String,
+      default: "",
+    },
     pfp: {
       data: Buffer,
       contentType: String,

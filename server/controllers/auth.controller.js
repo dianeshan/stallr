@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
-    bio: "fill me in",
+    bio: "This is where your bio goes. Edit your profile to change it.",
     pfp: {
       data: fs.readFileSync(
         path.join(__dirname + "/uploads/default-stallr-pfp.png")
