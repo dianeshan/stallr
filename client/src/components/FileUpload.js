@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Card } from "react-bootstrap";
+
 import UploadService from "../services/upload.service";
 
 const FileUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState(undefined);
   const [progressInfos, setProgressInfos] = useState({ val: [] });
-  const [message, setMessage] = useState([]);
+  // const [message, setMessage] = useState([]);
   const [fileInfos, setFileInfos] = useState([]);
   const progressInfosRef = useRef(null);
 
@@ -28,19 +30,21 @@ const FileUpload = () => {
       setProgressInfos({ val: _progressInfos });
     })
       .then(() => {
-        setMessage((prevMessage) => [
-          ...prevMessage,
-          "Uploaded the file successfully: " + file.name,
-        ]);
+        // setMessage((prevMessage) => [
+        //   ...prevMessage,
+        //   "Uploaded the file successfully: " + file.name,
+        // ]);
+        console.log(file.name);
       })
       .catch(() => {
         _progressInfos[idx].percentage = 0;
         setProgressInfos({ val: _progressInfos });
 
-        setMessage((prevMessage) => [
-          ...prevMessage,
-          "Could not upload the file: " + file.name,
-        ]);
+        // setMessage((prevMessage) => [
+        //   ...prevMessage,
+        //   "Could not upload the file: " + file.name,
+        // ]);
+        console.log(file.name);
       });
   };
 
@@ -64,7 +68,7 @@ const FileUpload = () => {
         setFileInfos(files.data);
       });
 
-    setMessage([]);
+    // setMessage([]);
   };
 
   return (
@@ -74,18 +78,20 @@ const FileUpload = () => {
         progressInfos.val.map((progressInfo, index) => (
           <div className="mb-2" key={index}>
             <span>{progressInfo.fileName}</span>
-            <div className="progress">
-              <div
-                className="progress-bar progress-bar-info"
-                role="progressbar"
-                aria-valuenow={progressInfo.percentage}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                style={{ width: progressInfo.percentage + "%" }}
-              >
-                {progressInfo.percentage}%
+            {progressInfo.percentage < 100 && (
+              <div className="progress">
+                <div
+                  className="progress-bar progress-bar-info"
+                  role="progressbar"
+                  aria-valuenow={progressInfo.percentage}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style={{ width: progressInfo.percentage + "%" }}
+                >
+                  {progressInfo.percentage}%
+                </div>
               </div>
-            </div>
+            )}
           </div>
         ))}
 
@@ -117,8 +123,7 @@ const FileUpload = () => {
         </div>
       )} */}
 
-      <div className="card">
-        <div className="card-header">List of Files</div>
+      <Card style={{ display: "none" }}>
         <ul className="list-group list-group-flush">
           {fileInfos &&
             fileInfos.map((file, index) => (
@@ -127,7 +132,7 @@ const FileUpload = () => {
               </li>
             ))}
         </ul>
-      </div>
+      </Card>
     </div>
   );
 };

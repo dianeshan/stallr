@@ -7,6 +7,7 @@ import { Card, Button } from "react-bootstrap";
 import GoogleLogin from "react-google-login";
 
 import AuthService from "../services/auth.service";
+import logo from "../resources/images/stallr-logo.png";
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -115,12 +116,8 @@ const Register = () => {
   return (
     <div className="col-md-12">
       <Card className="card-container">
-        {/* <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        /> */}
-        <Card.Title>
+        <img src={logo} alt="profile-img" />
+        <Card.Title className="pt-2">
           Sign up to experience toilet stalls from all over the world
         </Card.Title>
         <Form onSubmit={handleRegister} ref={form}>
@@ -175,6 +172,11 @@ const Register = () => {
                 role="alert"
               >
                 {message}
+                {successful && (
+                  <Button className="mt-2" variant="light" href="/login">
+                    Login
+                  </Button>
+                )}
               </div>
             </div>
           )}
