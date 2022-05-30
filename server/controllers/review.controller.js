@@ -1,5 +1,5 @@
 const db = require("../models");
-const Review = db.reviews;
+const Review = db.review;
 
 // Create and Save a new review
 exports.createReview = (req, res) => {
@@ -31,9 +31,9 @@ exports.createReview = (req, res) => {
 
 // Retrieve all reviews from the database.
 exports.findAllReviews = (req, res) => {
-  const description = req.query.description;
-  var condition = description
-    ? { title: { $regex: new RegExp(description), $options: "i" } }
+  const username = req.query.username;
+  var condition = username
+    ? { username: { $regex: new RegExp(username), $options: "i" } }
     : {};
 
   Review.find(condition)
