@@ -3,9 +3,11 @@ const { authJwt } = require("../middlewares");
 module.exports = function (app) {
   const users = require("../controllers/user.controller");
 
-  var router = require("express").Router();
+  // var router = require("express").Router();
 
-  router.put("/api/users/:id", users.updateUser);
+  app.get("/api/users/all", users.findAllUsers);
+
+  app.put("/api/users/:id", users.updateUser);
 
   app.use(function (req, res, next) {
     res.header(
@@ -14,8 +16,8 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/users/all", users.allAccess);
-  app.get("/api/users/user", [authJwt.verifyToken], users.userBoard);
+  // app.get("/api/users/all", users.allAccess);
+  //app.get("/api/users/user", [authJwt.verifyToken], users.userBoard);
   app.get(
     "/api/users/admin",
     [authJwt.verifyToken, authJwt.isAdmin],

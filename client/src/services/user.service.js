@@ -4,16 +4,16 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3000/api/users/";
 
-const getPublicContent = () => {
-  return axios.get(API_URL + "all");
-};
-
-const getUserBoard = () => {
-  return axios.get(API_URL + "user", { headers: authHeader() });
-};
+// const getPublicContent = () => {
+//   return axios.get(API_URL + "all");
+// };
 
 const getAdminBoard = () => {
   return axios.get(API_URL + "admin", { headers: authHeader() });
+};
+
+const getAll = () => {
+  return axios.get(API_URL + "all");
 };
 
 const update = (id, data) => {
@@ -21,10 +21,9 @@ const update = (id, data) => {
 };
 
 const UserService = {
-  getPublicContent,
-  getUserBoard,
   getAdminBoard,
   update,
+  getAll,
 };
 
 export default UserService;
