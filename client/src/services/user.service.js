@@ -17,7 +17,7 @@ const getAdminBoard = () => {
 };
 
 const update = (id, data) => {
-  return axios.put(`${id}`, data);
+  return axios.put(API_URL + `${id}`, data);
 };
 
 const UserService = {

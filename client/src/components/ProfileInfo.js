@@ -1,10 +1,39 @@
-import { Container, Row, Col, Nav } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Container, Row, Col, Nav, Button, Modal } from "react-bootstrap";
 
 import AuthService from "../services/auth.service";
 import Pfp from "./Pfp";
+import EditProfile from "./EditProfile";
+import UserService from "../services/user.service";
 
 function ProfileInfo() {
   const currentUser = AuthService.getCurrentUser();
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = (bio) => {
+    var user = {
+      username: currentUser.username,
+      email: currentUser.email,
+      password: currentUser.password,
+      roles: currentUser.roles,
+      friends: currentUser.friends,
+      bio: bio,
+      pfp: currentUser.pfp
+    };
+
+    UserService.update(currentUser.id, currentUser)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   return (
     <div>
       <Container style={{ marginTop: 100 }}>
@@ -25,10 +54,24 @@ function ProfileInfo() {
             <Nav.Link href="Friends">Friends</Nav.Link>
           </Col>
           <Col md={1}>
-            <Nav.Link href="Edit-Profile">Edit Profile</Nav.Link>
+            <Button variant="primary" onClick={handleShow}>Edit Profile</Button>
           </Col>
         </Row>
       </Container>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditProfile onSubmit={handleSubmit} handleClose={handleClose} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
