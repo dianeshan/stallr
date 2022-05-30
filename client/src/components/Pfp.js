@@ -1,16 +1,21 @@
 import { Figure } from "react-bootstrap";
 
+import AuthService from "../services/auth.service";
+
 function Pfp() {
-    return (
-        <Figure>
-            <Figure.Image
-                width={150}
-                height={150}
-                src={process.env.PUBLIC_URL + "/all_hail_gorb_pfp.png"}
-                roundedCircle={true}
-            />
-        </Figure>
-    )
+  const currentUser = AuthService.getCurrentUser();
+
+  return (
+    <Figure>
+      <Figure.Image
+        width={150}
+        height={150}
+        src={`data:${currentUser.pfp.contentType};base64, ${currentUser.pfp.data}`}
+        roundedCircle={true}
+        alt="profile"
+      />
+    </Figure>
+  );
 }
 
 export default Pfp;

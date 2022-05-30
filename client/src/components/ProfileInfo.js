@@ -1,33 +1,79 @@
-import { Container, Row, Col, Nav } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Container, Row, Col, Nav, Button, Modal } from "react-bootstrap";
 
-import Pfp from "./Pfp"
+import AuthService from "../services/auth.service";
+import Pfp from "./Pfp";
+import EditProfile from "./EditProfile";
+import UserService from "../services/user.service";
 
 function ProfileInfo() {
+  const currentUser = AuthService.getCurrentUser();
 
-    return (
-        <div>
-            <Container style={{ marginTop: 100 }}>
-                <Row style={{marginBottom: 10, fontSize: 20}}>
-                    <Col>TheHyperLeafeon</Col>
-                    <Col></Col>
-                </Row>
-                <Row>
-                    <Col className="align-left" md={{ span: 5, offset: 2}}>
-                        According to all known laws of aviation, there is no way a bee should be able to fly.
-                        Its wings are too small to get its fat little body off the ground.
-                        The bee, of course, flies anyway because bees don't care what humans think is impossible.
-                        Yellow, black. Yellow, black. Yellow, black. Yellow, black.
-                        Ooh, black and yellow!
-                        Let's shake it up a little. </Col>
-                    <Col md="auto"><Pfp style={{ marginTop: 50 }}/></Col>
-                </Row>
-                <Row className="align-middle">
-                    <Col md={{ span: 1, offset: 7 }}><Nav.Link href="Friends">Friends</Nav.Link></Col>
-                    <Col md={1}><Nav.Link href="Edit-Profile">Edit Profile</Nav.Link></Col>
-                </Row>
-            </Container>
-        </div>
-    )
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = (bio) => {
+    var user = {
+      username: currentUser.username,
+      email: currentUser.email,
+      password: currentUser.password,
+      roles: currentUser.roles,
+      friends: currentUser.friends,
+      bio: bio,
+      pfp: currentUser.pfp
+    };
+
+    UserService.update(currentUser.id, currentUser)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  return (
+    <div>
+      <Container style={{ marginTop: 100 }}>
+        <Row style={{ marginBottom: 10, fontSize: 20 }}>
+          <Col>{currentUser.username}</Col>
+          <Col></Col>
+        </Row>
+        <Row>
+          <Col className="align-left" md={{ span: 5, offset: 2 }}>
+            {currentUser.bio}
+          </Col>
+          <Col md="auto">
+            <Pfp style={{ marginTop: 50 }} />
+          </Col>
+        </Row>
+        <Row className="align-middle">
+          <Col md={{ span: 1, offset: 7 }}>
+            <Nav.Link href="Friends">Friends</Nav.Link>
+          </Col>
+          <Col md={1}>
+            <Button variant="primary" onClick={handleShow}>Edit Profile</Button>
+          </Col>
+        </Row>
+      </Container>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <EditProfile onSubmit={handleSubmit} handleClose={handleClose} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
 }
 
 export default ProfileInfo;

@@ -1,6 +1,14 @@
 const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+
 module.exports = function (app) {
+  const users = require("../controllers/user.controller");
+
+  // var router = require("express").Router();
+
+  app.get("/api/users/all", users.findAllUsers);
+
+  app.put("/api/users/:id", users.updateUser);
+
   app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
@@ -8,11 +16,11 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/test/all", controller.allAccess);
-  app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
+  // app.get("/api/users/all", users.allAccess);
+  //app.get("/api/users/user", [authJwt.verifyToken], users.userBoard);
   app.get(
-    "/api/test/admin",
+    "/api/users/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
+    users.adminBoard
   );
 };
