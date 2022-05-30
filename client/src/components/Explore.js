@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
 
 const Explore = () => {
+  const you = AuthService.getCurrentUser();
+
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -30,6 +33,17 @@ const Explore = () => {
       });
   };
 
+  // const retrieveFriends = () => {
+  //   UserService.getAllFriends()
+  //     .then((response) => {
+  //       setUsers(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
+
   const refreshList = () => {
     retrieveUsers();
     setCurrentUser(null);
@@ -39,6 +53,16 @@ const Explore = () => {
   const setActiveUser = (user, index) => {
     setCurrentUser(user);
     setCurrentIndex(index);
+  };
+
+  const addFriend = () => {
+    UserService.addfriend(you.id, currentUser)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   //   const findByUsername = () => {
@@ -118,12 +142,13 @@ const Explore = () => {
                 {currentUser.bio}
               </div>
 
-              <Link
-                to={"/tutorials/" + currentUser.id}
+              {/* <Link
+                to={"/users/" + currentUser.id}
                 className="badge badge-warning"
               >
                 Edit
-              </Link>
+              </Link> */}
+              <Button onClick={addFriend}>Add Friend</Button>
             </div>
           ) : (
             <div>

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const db = require("./models");
 require("dotenv").config({ path: "./config.env" });
 
@@ -11,9 +12,12 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json());
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+
+// app.use(express.urlencoded({ extended: true }));
 
 const dbConfig = process.env.ATLAS_URI;
 const Role = db.role;

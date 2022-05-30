@@ -33,9 +33,12 @@ A web application to share toilet reviews. It can be an awful experience to have
 
 1. Open a new terminal and go into the client directory from the project base.
     - `cd client`
-2. Install the necessary packages needed to run the client.
+2. Create a new file in this directory called `.env`.
+    - `touch .env`
+3. Contact a member of the team in order to set up the file properly
+4. Install the necessary packages needed to run the client.
     - `npm install`
-3. Start the client. If your browser doesn't automatically open, you can access the application at `http://localhost:3001`.
+5. Start the client. If your browser doesn't automatically open, you can access the application at `http://localhost:3001`.
     - `npm start`
 
 ### Server
