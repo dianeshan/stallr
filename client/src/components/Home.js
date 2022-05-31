@@ -7,7 +7,6 @@ import Review from "./Review";
 import NewReview from "./NewReview";
 
 const Home = () => {
-  // const [content, setContent] = useState("");
   const [show, setShow] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -72,7 +71,6 @@ const Home = () => {
             />
           </div>
         ))}
-      {/* <FileUpload /> */}
     </Container>
   );
 };

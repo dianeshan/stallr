@@ -97,7 +97,7 @@ const NewReview = () => {
             onChange={updateForm}
           />
         </Form.Group>
-        <Button onClick={submitReview} variant="primary">
+        <Button onClick={submitReview} variant="primary" type="submit">
           Submit
         </Button>
       </Form>
