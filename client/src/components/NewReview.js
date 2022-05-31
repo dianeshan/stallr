@@ -1,69 +1,79 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Form, Button } from "react-bootstrap";
- 
-export default function NewReview() {
- const [form, setForm] = useState({
+import ReviewService from "../services/review.service";
+
+const NewReview = () => {
+
+  const initialReviewState = {
     toiletlocation: "",
     review: "",
     rating: "",
     photos: "",
- });
- const navigate = useNavigate();
- 
- // These methods will update the state properties.
- function updateForm(value) {
-   return setForm((prev) => {
-     return { ...prev, ...value };
-   });
- }
- 
- // This function will handle the submission.
- async function onSubmit(e) {
-   e.preventDefault();
- 
-   // When a post request is sent to the create url, we'll add a new record to the database.
-   const newReview = { ...form };
- 
-   await fetch("http://localhost:5000/review/add", {
-     method: "POST",
-     headers: {
-       "Content-Type": "application/json",
-     },
-     body: JSON.stringify(newReview),
-   })
-   .catch(error => {
-     window.alert(error);
-     return;
-   });
- 
-   setForm({ toiletlocation: "", review: "", rating: "", photos: "" });
-   navigate("/");
- }
- 
- return (
-     <div>
-         <Form onSubmit={onSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+  }
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState(initialReviewState);
+
+  const updateForm = e => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const submitReview = () => {
+    var data = {
+        toiletlocation: form.toiletlocation,
+        review: form.review,
+        rating: form.rating,
+        photos: form.photos,
+    };
+
+    ReviewService.create(data)
+      .then(response => {
+        setForm({
+          toiletlocation: response.data.toiletlocation,
+          review: response.data.review,
+          rating: response.data.rating,
+          photos: response.data.photos
+        });
+        setSubmitted(true);
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+/* dont need this i think
+  const newReview = () => {
+    setForm(initialFormState);
+    setSubmitted(false);
+  };
+  */
+
+  return (
+    <div>
+         <Form>
+            <Form.Group className="mb-3">
                 <Form.Label>Toilet Location</Form.Label>
-                <Form.Control id="toiletlocation" value={form.toiletlocation} onChange={(e) => updateForm({ toiletlocation: e.target.value })} type="text" placeholder="Enter location of toilet" />
+                <Form.Control name="toiletlocation" id="toiletlocation" value={form.toiletlocation} onChange={updateForm} type="text" placeholder="Enter location of toilet" />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+            <Form.Group className="mb-3">
                 <Form.Label>Review</Form.Label>
-                <Form.Control as="textarea" rows={3} id="review" value={form.review} onChange={(e) => updateForm({ review: e.target.value })} type="text" placeholder="Enter review"/>
+                <Form.Control name="review" as="textarea" rows={3} id="review" value={form.review} onChange={updateForm} type="text" placeholder="Enter review"/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3">
                 <Form.Label>Rating</Form.Label>
-                <Form.Control id="rating" value={form.rating} onChange={(e) => updateForm({ rating: e.target.value })} type="text" placeholder="Enter rating" />
+                <Form.Control name="rating" id="rating" value={form.rating} onChange={updateForm} type="text" placeholder="Enter rating" />
             </Form.Group>
-            <Form.Group controlId="formFileMultiple" className="mb-3">
+            <Form.Group className="mb-3">
                 <Form.Label>Photos</Form.Label>
-                <Form.Control type="file" multiple id="photos" value={form.photos} onChange={(e) => updateForm({ photos: e.target.value })} />
+                <Form.Control name="photos" type="file" multiple id="photos" value={form.photos} onChange={updateForm} />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button onClick = {submitReview} variant="primary" type="submit">
                 Submit
             </Button>
         </Form>
     </div>
- );
-}
+  );
+};
+
+export default NewReview;

@@ -77,7 +77,7 @@ exports.updateReview = (req, res) => {
 
   const id = req.params.id;
 
-  Review.findByIdAndUpdateReview(id, req.body, { useFindAndModify: false })
+  Review.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).send({
