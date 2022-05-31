@@ -35,7 +35,11 @@ exports.updateUser = (req, res) => {
 
   const id = req.params.id;
 
-  User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  User.updateOne(
+    { _id: id },
+    { $set: { bio: req.body.bio } },
+    { new: true, upsert: true }
+  )
     .then((data) => {
       if (!data) {
         res.status(404).send({

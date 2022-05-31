@@ -17,7 +17,9 @@ const getAll = () => {
 };
 
 const update = (id, data) => {
-  return axios.put(API_URL + `${id}`, data);
+  return axios.put(API_URL + `${id}`, JSON.stringify(data), {
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 const UserService = {
