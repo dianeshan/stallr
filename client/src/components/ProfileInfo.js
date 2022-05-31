@@ -37,7 +37,6 @@ function ProfileInfo() {
       .catch((e) => {
         console.log(e);
       });
-
   };
 
   return (
