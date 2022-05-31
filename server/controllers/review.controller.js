@@ -1,19 +1,24 @@
 const db = require("../models");
-const Review = db.reviews;
+const Review = db.review;
 
 // Create and Save a new review
 exports.createReview = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body) {
     res.status(400).send({ message: "Can't be empty!" });
     return;
   }
 
   // Create a review
-  const review = new Review(req.body.review);
-  review.date = Date.now();
-  review.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-  review.username = req.user.username;
+  const review = new Review({
+    user: req.body.user,
+    username: req.body.username,
+    location: req.body.location,
+    description: req.body.description,
+    rating: req.body.rating,
+    images: req.body.images,
+    published: true,
+  });
 
   // Save review in the database
   review
@@ -31,9 +36,9 @@ exports.createReview = (req, res) => {
 
 // Retrieve all reviews from the database.
 exports.findAllReviews = (req, res) => {
-  const description = req.query.description;
-  var condition = description
-    ? { title: { $regex: new RegExp(description), $options: "i" } }
+  const username = req.query.username;
+  var condition = username
+    ? { username: { $regex: new RegExp(username), $options: "i" } }
     : {};
 
   Review.find(condition)
@@ -77,7 +82,7 @@ exports.updateReview = (req, res) => {
 
   const id = req.params.id;
 
-  Review.findByIdAndUpdateReview(id, req.body, { useFindAndModify: false })
+  Review.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).send({

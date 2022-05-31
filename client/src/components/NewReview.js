@@ -1,69 +1,108 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import { Form, Button } from "react-bootstrap";
- 
-export default function NewReview() {
- const [form, setForm] = useState({
-    toiletlocation: "",
-    review: "",
-    rating: "",
-    photos: "",
- });
- const navigate = useNavigate();
- 
- // These methods will update the state properties.
- function updateForm(value) {
-   return setForm((prev) => {
-     return { ...prev, ...value };
-   });
- }
- 
- // This function will handle the submission.
- async function onSubmit(e) {
-   e.preventDefault();
- 
-   // When a post request is sent to the create url, we'll add a new record to the database.
-   const newReview = { ...form };
- 
-   await fetch("http://localhost:5000/review/add", {
-     method: "POST",
-     headers: {
-       "Content-Type": "application/json",
-     },
-     body: JSON.stringify(newReview),
-   })
-   .catch(error => {
-     window.alert(error);
-     return;
-   });
- 
-   setForm({ toiletlocation: "", review: "", rating: "", photos: "" });
-   navigate("/");
- }
- 
- return (
-     <div>
-         <Form onSubmit={onSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Toilet Location</Form.Label>
-                <Form.Control id="toiletlocation" value={form.toiletlocation} onChange={(e) => updateForm({ toiletlocation: e.target.value })} type="text" placeholder="Enter location of toilet" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Review</Form.Label>
-                <Form.Control as="textarea" rows={3} id="review" value={form.review} onChange={(e) => updateForm({ review: e.target.value })} type="text" placeholder="Enter review"/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Rating</Form.Label>
-                <Form.Control id="rating" value={form.rating} onChange={(e) => updateForm({ rating: e.target.value })} type="text" placeholder="Enter rating" />
-            </Form.Group>
-            <Form.Group controlId="formFileMultiple" className="mb-3">
-                <Form.Label>Photos</Form.Label>
-                <Form.Control type="file" multiple id="photos" value={form.photos} onChange={(e) => updateForm({ photos: e.target.value })} />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
+
+import ReviewService from "../services/review.service";
+import AuthService from "../services/auth.service";
+
+const NewReview = () => {
+  const currentUser = AuthService.getCurrentUser();
+
+  const initialReviewState = {
+    user: currentUser._id,
+    username: currentUser.username,
+    location: "",
+    description: "",
+    images: [],
+    rating: 0,
+  };
+
+  const [form, setForm] = useState(initialReviewState);
+
+  const updateForm = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const submitReview = () => {
+    var data = {
+      user: currentUser._id,
+      username: currentUser.username,
+      location: form.location,
+      description: form.description,
+      rating: form.rating,
+      images: form.images,
+    };
+
+    ReviewService.createReview(data)
+      .then((response) => {
+        setForm({
+          username: currentUser.username,
+          location: response.data.location,
+          description: response.data.description,
+          rating: response.data.rating,
+          images: response.data.images,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  return (
+    <div>
+      <Form>
+        <Form.Group className="mb-3">
+          <Form.Label>Toilet Location</Form.Label>
+          <Form.Control
+            name="location"
+            id="location"
+            value={form.location}
+            onChange={updateForm}
+            type="text"
+            placeholder="Enter location of toilet"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            name="description"
+            as="textarea"
+            rows={3}
+            id="description"
+            value={form.description}
+            onChange={updateForm}
+            type="text"
+            placeholder="Enter description"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Rating</Form.Label>
+          <Form.Control
+            name="rating"
+            id="rating"
+            value={form.rating}
+            onChange={updateForm}
+            type="number"
+            placeholder="Enter rating"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Iamges</Form.Label>
+          <Form.Control
+            name="images"
+            type="file"
+            multiple
+            id="images"
+            value={form.images}
+            onChange={updateForm}
+          />
+        </Form.Group>
+        <Button onClick={submitReview} variant="primary">
+          Submit
+        </Button>
+      </Form>
     </div>
- );
-}
+  );
+};
+
+export default NewReview;

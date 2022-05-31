@@ -35,6 +35,32 @@ exports.uploadFiles = async (req, res) => {
   }
 };
 
+// exports.getOneFile = async (req, res) => {
+//   try {
+//     await mongoClient.connect();
+//     const database = mongoClient.db("toilets");
+//     const images = database.collection(process.env.IMG_BUCKET + ".files");
+//     const cursor = images.find({});
+//     if ((await cursor.estimatedDocumentCount()) === 0) {
+//       return res.status(500).send({
+//         message: "No files found!",
+//       });
+//     }
+//     let fileInfos = [];
+//     await cursor.forEach((doc) => {
+//       fileInfos.push({
+//         name: doc.filename,
+//         url: baseUrl + doc.filename,
+//       });
+//     });
+//     return res.status(200).send(fileInfos);
+//   } catch (error) {
+//     return res.status(500).send({
+//       message: error.message,
+//     });
+//   }
+// };
+
 exports.getListFiles = async (req, res) => {
   try {
     await mongoClient.connect();
