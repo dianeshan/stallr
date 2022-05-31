@@ -1,36 +1,60 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Nav, Button, Modal } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Container, Row, Col, Nav, Button, Modal, Form } from "react-bootstrap";
 
 import AuthService from "../services/auth.service";
 import Pfp from "./Pfp";
-import EditProfile from "./EditProfile";
+//import EditProfile from "./EditProfile";
 import UserService from "../services/user.service";
 
-function ProfileInfo() {
-  const currentUser = AuthService.getCurrentUser();
+const ProfileInfo = (props) => {
+  // const currentUser = AuthService.getCurrentUser();
+  const { id } = useParams();
 
+  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const [show, setShow] = useState(false);
+  // const [bio, setBio] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (bio) => {
-    var user = {
-      username: currentUser.username,
-      email: currentUser.email,
-      password: currentUser.password,
-      roles: currentUser.roles,
-      friends: currentUser.friends,
-      bio: bio,
-      pfp: currentUser.pfp
-    };
-
-    UserService.update(currentUser.id, currentUser)
-      .then(response => {
+  const getUser = (id) => {
+    UserService.get(id)
+      .then((response) => {
+        setCurrentUser(response.data);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    if (id) getUser(id);
+  }, [id]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCurrentUser({ ...currentUser, [name]: value });
+  };
+
+  const updateUser = () => {
+    // var user = {
+    //   username: currentUser.username,
+    //   email: currentUser.email,
+    //   password: currentUser.password,
+    //   roles: currentUser.roles,
+    //   friends: currentUser.friends,
+    //   bio: bio,
+    //   pfp: currentUser.pfp,
+    // };
+
+    UserService.update(currentUser.id, currentUser)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e.response.data);
       });
   };
 
@@ -38,7 +62,9 @@ function ProfileInfo() {
     <div>
       <Container style={{ marginTop: 100 }}>
         <Row style={{ marginBottom: 10, fontSize: 20 }}>
-          <Col>{currentUser.username}</Col>
+          <Col>
+            <h3>{currentUser.username}</h3>
+          </Col>
           <Col></Col>
         </Row>
         <Row>
@@ -54,17 +80,61 @@ function ProfileInfo() {
             <Nav.Link href="Friends">Friends</Nav.Link>
           </Col>
           <Col md={1}>
-            <Button variant="primary" onClick={handleShow}>Edit Profile</Button>
+            <Button variant="primary" onClick={handleShow}>
+              Edit Profile
+            </Button>
           </Col>
         </Row>
       </Container>
+
+      {/* <Form>
+        <Form.Group>
+          <Form.Label>Bio</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter bio"
+            value={currentUser.bio}
+            name="bio"
+            onChange={handleInputChange}
+          />
+          {console.log(currentUser.bio)}
+        </Form.Group>
+        <p></p>
+        <Button variant="primary" onClick={updateUser}>
+          Submit
+        </Button>
+      </Form> */}
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditProfile onSubmit={handleSubmit} handleClose={handleClose} />
+          {/* <EditProfile onSubmit={handleSubmit} handleClose={handleClose} /> */}
+          <Form>
+            <Form.Group>
+              <Form.Label>Bio</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter bio"
+                value={currentUser.bio}
+                name="bio"
+                onChange={handleInputChange}
+              />
+              {console.log(currentUser.bio)}
+            </Form.Group>
+            <p></p>
+          </Form>
+          <Button
+            type="submit"
+            variant="primary"
+            onClick={(e) => {
+              updateUser();
+              handleClose();
+            }}
+          >
+            Submit
+          </Button>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -74,6 +144,6 @@ function ProfileInfo() {
       </Modal>
     </div>
   );
-}
+};
 
 export default ProfileInfo;

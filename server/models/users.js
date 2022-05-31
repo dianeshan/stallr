@@ -39,7 +39,18 @@ const UserSchema = new Schema(
       contentType: String,
     },
   },
-  { timestamps: true }
+  {
+    toObject: {
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
+    },
+    toJSON: {
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
+    },
+  }
 );
 
 module.exports = mongoose.model("User", UserSchema);

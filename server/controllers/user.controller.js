@@ -26,6 +26,20 @@ exports.findAllUsers = (req, res) => {
     });
 };
 
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .then((data) => {
+      if (!data)
+        res.status(404).send({ message: "Not found user with id " + id });
+      else res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({ message: "Error retrieving user with id=" + id });
+    });
+};
+
 exports.updateUser = (req, res) => {
   if (!req.body) {
     return res.status(400).send({
@@ -35,7 +49,10 @@ exports.updateUser = (req, res) => {
 
   const id = req.params.id;
 
-  User.findByIdAndUpdateUser(id, req.body, { useFindAndModify: false })
+  User.updateOne(id, req.body, {
+    new: true,
+    returnDocument: "after",
+  })
     .then((data) => {
       if (!data) {
         res.status(404).send({

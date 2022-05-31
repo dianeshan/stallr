@@ -7,6 +7,8 @@ module.exports = function (app) {
 
   app.get("/api/users/all", users.findAllUsers);
 
+  app.get("/api/users/:id", users.findOne);
+
   app.put("/api/users/:id", users.updateUser);
 
   app.use(function (req, res, next) {
