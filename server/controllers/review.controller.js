@@ -36,12 +36,8 @@ exports.createReview = (req, res) => {
 
 // Retrieve all reviews from the database.
 exports.findAllReviews = (req, res) => {
-  const username = req.query.username;
-  var condition = username
-    ? { username: { $regex: new RegExp(username), $options: "i" } }
-    : {};
-
-  Review.find(condition)
+  Review.find()
+    .sort({ date: -1 })
     .then((data) => {
       res.send(data);
     })
