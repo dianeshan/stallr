@@ -7,7 +7,7 @@ import EditProfile from "./EditProfile";
 import UserService from "../services/user.service";
 
 function ProfileInfo() {
-  const currentUser = AuthService.getCurrentUser();
+  var currentUser = AuthService.getCurrentUser();
 
   const [show, setShow] = useState(false);
 
@@ -15,6 +15,7 @@ function ProfileInfo() {
   const handleShow = () => setShow(true);
 
   const handleSubmit = (bio) => {
+    console.log(bio);
     var user = {
       username: currentUser.username,
       email: currentUser.email,
@@ -28,10 +29,15 @@ function ProfileInfo() {
     UserService.update(currentUser.id, user)
       .then((response) => {
         console.log(response.data);
+        var updateUser = JSON.parse(localStorage.getItem("user"));
+        updateUser.bio = bio;
+        localStorage.setItem("user", JSON.stringify(updateUser));
+        window.location.reload();
       })
       .catch((e) => {
         console.log(e);
       });
+
   };
 
   return (
