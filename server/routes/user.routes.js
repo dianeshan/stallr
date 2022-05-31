@@ -3,9 +3,11 @@ const { authJwt } = require("../middlewares");
 module.exports = function (app) {
   const users = require("../controllers/user.controller");
 
-  // var router = require("express").Router();
-
   app.get("/api/users/all", users.findAllUsers);
+
+  app.post("/api/users/friends/:id", users.addFriend);
+
+  app.get("/api/users/friends", users.findAllFriends);
 
   app.put("/api/users/:id", users.updateUser);
 

@@ -9,6 +9,8 @@ module.exports = (app) => {
   // Retrieve all reviews
   router.get("/", reviews.findAllReviews);
 
+  router.get("/user-reviews/:id", reviews.findAllUserReviews);
+
   // Retrieve all published reviews
   router.get("/published", reviews.findAllPublishedReviews);
 
