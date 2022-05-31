@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Container, Row, Col, Nav, Button, Modal } from "react-bootstrap";
 
 import AuthService from "../services/auth.service";
@@ -22,14 +22,14 @@ function ProfileInfo() {
       roles: currentUser.roles,
       friends: currentUser.friends,
       bio: bio,
-      pfp: currentUser.pfp
+      pfp: currentUser.pfp,
     };
 
-    UserService.update(currentUser.id, currentUser)
-      .then(response => {
+    UserService.update(currentUser.id, user)
+      .then((response) => {
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -54,7 +54,9 @@ function ProfileInfo() {
             <Nav.Link href="Friends">Friends</Nav.Link>
           </Col>
           <Col md={1}>
-            <Button variant="primary" onClick={handleShow}>Edit Profile</Button>
+            <Button variant="primary" onClick={handleShow}>
+              Edit Profile
+            </Button>
           </Col>
         </Row>
       </Container>
