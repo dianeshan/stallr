@@ -35,17 +35,13 @@ exports.updateUser = (req, res) => {
 
   const id = req.params.id;
 
-  User.updateOne(
-    { _id: id },
-    { $set: { bio: req.body.bio } },
-    { new: true, upsert: true }
-  )
+  User.updateOne({ _id: id }, { $set: { bio: req.body.bio } }, { new: true })
     .then((data) => {
       if (!data) {
         res.status(404).send({
           message: `Cannot update user with id=${id}. Perhaps user not found!`,
         });
-      } else res.send({ message: "User updated successfully." });
+      } else res.send({ message: "User updated successfully" });
     })
     .catch((err) => {
       res.status(500).send({
