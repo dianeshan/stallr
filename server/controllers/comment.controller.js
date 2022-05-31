@@ -1,6 +1,6 @@
 const db = require("../models");
-const Review = db.reviews;
-const Comment = db.comments;
+const Review = db.review;
+const Comment = db.comment;
 
 // Create and Save a new comment
 exports.createComment = async (req, res) => {
