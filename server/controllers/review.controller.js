@@ -4,16 +4,21 @@ const Review = db.review;
 // Create and Save a new review
 exports.createReview = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body) {
     res.status(400).send({ message: "Can't be empty!" });
     return;
   }
 
   // Create a review
-  const review = new Review(req.body.review);
-  review.date = Date.now();
-  review.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-  review.username = req.user.username;
+  const review = new Review({
+    user: req.body.user,
+    username: req.body.username,
+    location: req.body.location,
+    description: req.body.description,
+    rating: req.body.rating,
+    images: req.body.images,
+    published: true,
+  });
 
   // Save review in the database
   review

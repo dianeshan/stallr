@@ -2,31 +2,30 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const opts =
-  ("toJSON",
-  function () {
-    const { __v, _id, ...object } = this.toObject();
-    object.id = _id;
-    return object;
-  });
-
 const ReviewSchema = new Schema(
   {
-    username: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    username: {
+      type: String,
+      required: true,
     },
     location: {
       type: String,
       required: true,
+      default: "",
     },
     description: {
       type: String,
       required: true,
+      default: "",
     },
     rating: {
       type: Number,
       required: true,
+      default: 0,
     },
     date: {
       type: Date,
@@ -51,7 +50,18 @@ const ReviewSchema = new Schema(
     },
   },
   { timestamps: true },
-  opts
+  {
+    toObject: {
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
+    },
+    toJSON: {
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
+    },
+  }
 );
 
 module.exports = mongoose.model("Review", ReviewSchema);

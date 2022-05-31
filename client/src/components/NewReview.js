@@ -1,77 +1,106 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import { Form, Button } from "react-bootstrap";
+
 import ReviewService from "../services/review.service";
+import AuthService from "../services/auth.service";
 
 const NewReview = () => {
+  const currentUser = AuthService.getCurrentUser();
 
   const initialReviewState = {
-    toiletlocation: "",
-    review: "",
-    rating: "",
-    photos: "",
-  }
-  const [submitted, setSubmitted] = useState(false);
+    user: currentUser._id,
+    username: currentUser.username,
+    location: "",
+    description: "",
+    images: [],
+    rating: 0,
+  };
+
   const [form, setForm] = useState(initialReviewState);
 
-  const updateForm = e => {
+  const updateForm = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
   const submitReview = () => {
     var data = {
-        toiletlocation: form.toiletlocation,
-        review: form.review,
-        rating: form.rating,
-        photos: form.photos,
+      user: currentUser._id,
+      username: currentUser.username,
+      location: form.location,
+      description: form.description,
+      rating: form.rating,
+      images: form.images,
     };
 
-    ReviewService.create(data)
-      .then(response => {
+    ReviewService.createReview(data)
+      .then((response) => {
         setForm({
-          toiletlocation: response.data.toiletlocation,
-          review: response.data.review,
+          username: currentUser.username,
+          location: response.data.location,
+          description: response.data.description,
           rating: response.data.rating,
-          photos: response.data.photos
+          images: response.data.images,
         });
-        setSubmitted(true);
-        console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
-/* dont need this i think
-  const newReview = () => {
-    setForm(initialFormState);
-    setSubmitted(false);
-  };
-  */
 
   return (
     <div>
-         <Form>
-            <Form.Group className="mb-3">
-                <Form.Label>Toilet Location</Form.Label>
-                <Form.Control name="toiletlocation" id="toiletlocation" value={form.toiletlocation} onChange={updateForm} type="text" placeholder="Enter location of toilet" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Review</Form.Label>
-                <Form.Control name="review" as="textarea" rows={3} id="review" value={form.review} onChange={updateForm} type="text" placeholder="Enter review"/>
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Rating</Form.Label>
-                <Form.Control name="rating" id="rating" value={form.rating} onChange={updateForm} type="text" placeholder="Enter rating" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Photos</Form.Label>
-                <Form.Control name="photos" type="file" multiple id="photos" value={form.photos} onChange={updateForm} />
-            </Form.Group>
-            <Button onClick = {submitReview} variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
+      <Form>
+        <Form.Group className="mb-3">
+          <Form.Label>Toilet Location</Form.Label>
+          <Form.Control
+            name="location"
+            id="location"
+            value={form.location}
+            onChange={updateForm}
+            type="text"
+            placeholder="Enter location of toilet"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            name="description"
+            as="textarea"
+            rows={3}
+            id="description"
+            value={form.description}
+            onChange={updateForm}
+            type="text"
+            placeholder="Enter description"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Rating</Form.Label>
+          <Form.Control
+            name="rating"
+            id="rating"
+            value={form.rating}
+            onChange={updateForm}
+            type="number"
+            placeholder="Enter rating"
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Iamges</Form.Label>
+          <Form.Control
+            name="images"
+            type="file"
+            multiple
+            id="images"
+            value={form.images}
+            onChange={updateForm}
+          />
+        </Form.Group>
+        <Button onClick={submitReview} variant="primary">
+          Submit
+        </Button>
+      </Form>
     </div>
   );
 };
