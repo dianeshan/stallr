@@ -52,7 +52,6 @@ exports.createComment = async (req, res) => {
 
 exports.getComment = async (req, res) => {
   const id = req.params.id;
-
   Comment.findById(id)
     .then((data) => {
       if (!data) {
@@ -71,7 +70,10 @@ exports.getComment = async (req, res) => {
 };
 
 exports.deleteComment = async (req, res) => {
-  const { id, commentId } = req.params;
+  const id = req.params.id;
+  //console.log(id);
+  const commentId = req.body.data;
+  console.log(commentId);
   await Review.findByIdAndUpdate(id, { $pull: { comments: commentId } });
 
   Comment.findByIdAndRemove(commentId, { useFindAndModify: false })

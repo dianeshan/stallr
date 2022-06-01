@@ -65,10 +65,12 @@ const Comment = ({id, comments}) => {
             { commentList && commentList.map((comment, index) => (
                 <ul key={index}>
                     <li className="comment">
+                        {console.log(comment)}
                         <p>{comment.data.username}</p>
                         <p>{comment.data.message}</p>
                         <p>{new Date(comment.data.date).toLocaleString()}</p>
                     </li>
+                    { (comment.data.username === currentUser.username) && <Button variant="danger" onClick={() => CommentService.deleteComment(id, comment.data._id)}>Delete Comment</Button> }
                 </ul>
             ))}
         </div>

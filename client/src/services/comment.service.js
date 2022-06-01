@@ -11,8 +11,9 @@ const getComment = (id) => {
     return axios.get(API_URL + `${id}`);
 }
 
-const deleteComment = (id) => {
-    return axios.delete(API_URL + `${id}`);
+const deleteComment = (id, data) => {
+    console.log(data);
+    return axios.delete(API_URL + `${id}`, {data : {data}});
 };
 
 const CommentService = {
