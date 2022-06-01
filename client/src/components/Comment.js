@@ -44,7 +44,6 @@ const Comment = ({id, comments}) => {
             });
     };
 
-    console.log(commentList);
     return (
         <div>
             <Form>
