@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card } from "react-bootstrap";
+import { Container, Card, Figure } from "react-bootstrap";
 import { Buffer } from "buffer";
 
 import UserService from "../services/user.service";
@@ -60,11 +60,17 @@ const BoardAdmin = () => {
           >
             <Card.Title>{user.username}</Card.Title>
             <Card.Text>{user.bio}</Card.Text>
-            <Card.Img
-              src={`data:${user.pfp.contentType};base64, ${Buffer.from(
-                user.pfp.data
-              ).toString("base64")}`}
-            />
+            <Figure>
+              <Figure.Image
+                width={150}
+                height={150}
+                src={`data:${user.pfp.contentType};base64, ${Buffer.from(
+                  user.pfp.data
+                ).toString("base64")}`}
+                roundedCircle={true}
+                alt="profile"
+              />
+            </Figure>
           </Card>
         ))}
     </Container>

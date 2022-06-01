@@ -1,18 +1,15 @@
-const upload = require("../middlewares/upload");
-const MongoClient = require("mongodb").MongoClient;
-const GridFSBucket = require("mongodb").GridFSBucket;
+const upload = require("../middlewares/uploadImages");
 require("dotenv").config({ path: "../config.env" });
+const fs = require("fs");
 
-const url = process.env.ATLAS_URI;
-const baseUrl = "http://localhost:3000/api/uploads/files/";
-const mongoClient = new MongoClient(url);
+const url = "http://localhost:3000/server/public/";
 
 exports.uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
-    console.log(req.files);
+    console.log(req.file);
 
-    if (req.files.length <= 0) {
+    if (req.file === undefined) {
       return res
         .status(400)
         .send({ message: "You must select at least 1 file." });
@@ -35,56 +32,27 @@ exports.uploadFiles = async (req, res) => {
   }
 };
 
-// exports.getOneFile = async (req, res) => {
-//   try {
-//     await mongoClient.connect();
-//     const database = mongoClient.db("toilets");
-//     const images = database.collection(process.env.IMG_BUCKET + ".files");
-//     const cursor = images.find({});
-//     if ((await cursor.estimatedDocumentCount()) === 0) {
-//       return res.status(500).send({
-//         message: "No files found!",
-//       });
-//     }
-//     let fileInfos = [];
-//     await cursor.forEach((doc) => {
-//       fileInfos.push({
-//         name: doc.filename,
-//         url: baseUrl + doc.filename,
-//       });
-//     });
-//     return res.status(200).send(fileInfos);
-//   } catch (error) {
-//     return res.status(500).send({
-//       message: error.message,
-//     });
-//   }
-// };
-
 exports.getListFiles = async (req, res) => {
-  try {
-    await mongoClient.connect();
-    const database = mongoClient.db("toilets");
-    const images = database.collection(process.env.IMG_BUCKET + ".files");
-    const cursor = images.find({});
-    if ((await cursor.count()) === 0) {
-      return res.status(500).send({
-        message: "No files found!",
+  const path = url;
+
+  fs.readdir(path, function (err, files) {
+    if (err) {
+      res.status(500).send({
+        message: "Files not found.",
       });
     }
-    let fileInfos = [];
-    await cursor.forEach((doc) => {
-      fileInfos.push({
-        name: doc.filename,
-        url: baseUrl + doc.filename,
+
+    let filesList = [];
+
+    files.forEach((file) => {
+      filesList.push({
+        name: file,
+        url: url + file,
       });
     });
-    return res.status(200).send(fileInfos);
-  } catch (error) {
-    return res.status(500).send({
-      message: error.message,
-    });
-  }
+
+    res.status(200).send(filesList);
+  });
 };
 
 exports.download = async (req, res) => {

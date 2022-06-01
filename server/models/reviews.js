@@ -32,12 +32,10 @@ const ReviewSchema = new Schema(
       required: true,
       default: Date.now(),
     },
-    images: [
-      {
-        data: Buffer,
-        contentType: String,
-      },
-    ],
+    images: {
+      data: Buffer,
+      contentType: String,
+    },
     comments: [
       {
         type: Schema.Types.ObjectId,

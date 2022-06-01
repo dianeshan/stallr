@@ -1,5 +1,6 @@
 module.exports = (app) => {
   const reviews = require("../controllers/review.controller.js");
+  var upload = require("../middlewares/uploadImages");
 
   var router = require("express").Router();
 

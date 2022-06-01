@@ -14,8 +14,9 @@ function ProfileInfo() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (bio) => {
+  const handleSubmit = (bio, pfp) => {
     console.log(bio);
+    console.log(pfp);
     var user = {
       username: currentUser.username,
       email: currentUser.email,
@@ -23,7 +24,7 @@ function ProfileInfo() {
       roles: currentUser.roles,
       friends: currentUser.friends,
       bio: bio,
-      pfp: currentUser.pfp,
+      pfp: pfp,
     };
 
     UserService.update(currentUser.id, user)

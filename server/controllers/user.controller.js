@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const db = require("../models");
 const User = db.user;
 
@@ -34,8 +36,23 @@ exports.updateUser = (req, res) => {
   }
 
   const id = req.params.id;
+  console.log(req.body.pfp);
 
-  User.updateOne({ _id: id }, { $set: { bio: req.body.bio } }, { new: true })
+  User.updateOne(
+    { _id: id },
+    {
+      $set: {
+        bio: req.body.bio,
+        pfp: {
+          data: fs.readFileSync(
+            path.join(__dirname + "/uploads/" + req.file.filename)
+          ),
+          contentType: "image/png",
+        },
+      },
+    },
+    { new: true }
+  )
     .then((data) => {
       if (!data) {
         res.status(404).send({

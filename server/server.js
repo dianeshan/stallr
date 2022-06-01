@@ -11,6 +11,7 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use("/public", express.static("public"));
 
 app.use(bodyParser.json({ limit: "25mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "25mb" }));
