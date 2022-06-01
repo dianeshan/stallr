@@ -63,11 +63,13 @@ const Home = () => {
             key={index}
           >
             <Review
+              id={review._id}
               username={review.username}
               date={review.date}
               description={review.description}
               rating={review.rating}
               location={review.location}
+              comments={review.comments}
             />
           </div>
         ))}

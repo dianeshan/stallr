@@ -9,6 +9,9 @@ module.exports = (app) => {
   // Retrieve all comments (might not need this one)
   //   router.get("/", comments.findAllComments);
 
+  // Get a comment with id
+  router.get("/:id", comments.getComment);
+  
   // Delete a comment with id
   router.delete("/:id", comments.deleteComment);
 

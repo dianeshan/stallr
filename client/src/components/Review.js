@@ -1,7 +1,17 @@
+import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import toiletpic from "../resources/images/temp-toilet.jpeg";
 
-const Review = ({ username, date, location, description, rating }) => {
+import Comment from "./Comment";
+
+const Review = ({ id, username, date, location, description, rating, comments }) => {
+
+  const [toggle, setToggle] = useState(false);
+
+  const updateToggle = () => {
+    setToggle(!toggle);
+  };
+
   return (
     <Card className="w-50">
       <Card.Img variant="top" src={toiletpic} />
@@ -11,7 +21,8 @@ const Review = ({ username, date, location, description, rating }) => {
         <Card.Text>{new Date(date).toLocaleString()}</Card.Text>
         <Card.Text>Rating: {rating}/10</Card.Text>
         <Card.Text>{description}</Card.Text>
-        <Button variant="light">Comments</Button>
+        <Button variant="light" onClick={updateToggle}>Comments</Button>
+        {toggle && <Comment id={id} comments={comments} />}
       </Card.Body>
     </Card>
   );
