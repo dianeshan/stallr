@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Modal, Figure } from "react-bootstrap";
+import { Buffer } from "buffer";
 
 import AuthService from "../services/auth.service";
-import Pfp from "./Pfp";
 import EditProfile from "./EditProfile";
 import UserService from "../services/user.service";
 
@@ -20,16 +20,29 @@ function ProfileInfo() {
 
   useEffect(() => {
     async function resolvePromises() {
-        var temp = [];
-        var tempUser = await UserService.getUser(currentUser.id);
-        for (let i = 0; i < tempUser.data.friends.length; i++) {
-            var temp2 = await UserService.getUser(tempUser.data.friends[i])
-            temp.push(temp2);
-        }
-        setFriendsList(temp);
+      var temp = [];
+      var tempUser = await UserService.getUser(currentUser.id);
+      for (let i = 0; i < tempUser.data.friends.length; i++) {
+        var temp2 = await UserService.getUser(tempUser.data.friends[i]);
+        temp.push(temp2);
+      }
+      setFriendsList(temp);
     }
     resolvePromises();
-  }, [currentUser])
+  }, [currentUser]);
+
+  useEffect(() => {
+    async function resolvePromises() {
+      var tempUser = await UserService.getUser(currentUser.id);
+      var updateUser = JSON.parse(localStorage.getItem("user"));
+      updateUser.pfp.data = Buffer.from(tempUser.data.pfp.data).toString(
+        "base64"
+      );
+      updateUser.pfp.contentType = tempUser.data.pfp.contentType;
+      localStorage.setItem("user", JSON.stringify(updateUser));
+    }
+    resolvePromises();
+  }, [currentUser]);
 
   const handleSubmit = (bio, pfp) => {
     console.log(bio);
@@ -57,8 +70,6 @@ function ProfileInfo() {
       });
   };
 
-  //console.log(friendsList[0]);
-
   return (
     <div>
       <Container style={{ marginTop: 100 }}>
@@ -71,12 +82,24 @@ function ProfileInfo() {
             {currentUser.bio}
           </Col>
           <Col md="auto">
-            <Pfp style={{ marginTop: 50 }} />
+            <Figure>
+              <Figure.Image
+                width={150}
+                height={150}
+                src={`data:${
+                  currentUser.pfp.contentType
+                };base64, ${currentUser.pfp.data.toString("base64")}`}
+                roundedCircle={true}
+                alt="profile"
+              />
+            </Figure>
           </Col>
         </Row>
         <Row className="align-middle">
           <Col md={{ span: 1, offset: 7 }}>
-            <Button variant="primary" onClick={handleShowFriends}>Friends</Button>
+            <Button variant="primary" onClick={handleShowFriends}>
+              Friends
+            </Button>
           </Col>
           <Col md={1}>
             <Button variant="primary" onClick={handleShowEdit}>
@@ -91,26 +114,29 @@ function ProfileInfo() {
           <Modal.Title>Friends List</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          { friendsList && friendsList.map((friend, index) => (
-            <Container key={index}>
-              <Row>
-                <Col className="align-left">
-                  <Figure>
-                    <Figure.Image
-                      width={75}
-                      height={75}
-                      src={`data:${friend.data.pfp.contentType};base64, ${friend.data.pfp.data}`}
-                      roundedCircle={true}
-                      alt="profile"
-                    />
-                  </Figure>
-                </Col>
-                <Col>
-                  {friend.data.username}
-                </Col>
-              </Row>
-            </Container>
-          ))}
+          {friendsList &&
+            friendsList.map((friend, index) => (
+              <Container key={index}>
+                <Row>
+                  <Col lg={3} className="align-left">
+                    <Figure>
+                      <Figure.Image
+                        width={75}
+                        height={75}
+                        src={`data:${
+                          friend.data.pfp.contentType
+                        };base64, ${Buffer.from(friend.data.pfp.data).toString(
+                          "base64"
+                        )}`}
+                        roundedCircle={true}
+                        alt="profile"
+                      />
+                    </Figure>
+                  </Col>
+                  <Col>{friend.data.username}</Col>
+                </Row>
+              </Container>
+            ))}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseFriends}>
