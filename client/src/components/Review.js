@@ -1,11 +1,46 @@
 import { Card, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
 import toiletpic from "../resources/images/temp-toilet.jpeg";
 
+import ReviewService from "../services/review.service";
+import AuthService from "../services/auth.service";
+
+
+
 const Review = ({ username, date, location, description, rating }) => {
+
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      setCurrentUser(user);
+      //setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
+  }, []);
+
+  const deleteReview = () => {
+    
+    ReviewService.deleteReview()//need to put an id here
+      .then(response => {
+        console.log(response.data);
+        
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   return (
     <Card className="w-50">
       <Card.Img variant="top" src={toiletpic} />
       <Card.Body>
+        {currentUser.username == username?(
+          <Button id="deleteReviewButton">Delete</Button>
+        ):(
+          <></>
+        )
+        }
         <Card.Text>{username}</Card.Text>
         <Card.Text>{location}</Card.Text>
         <Card.Text>{new Date(date).toLocaleString()}</Card.Text>
@@ -16,5 +51,6 @@ const Review = ({ username, date, location, description, rating }) => {
     </Card>
   );
 };
+//need to check if you share the same username as the post's username. If so, then a delete option will be available.
 
 export default Review;
