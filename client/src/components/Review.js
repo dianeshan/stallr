@@ -31,13 +31,33 @@ const Review = ({ username, date, location, description, rating, id}) => {
       });
   };
 
+  const updateReview = () =>{
+    var data = {
+      username: username,
+      date : date,
+      location : location,
+      rating : rating,
+    }
+    ReviewService.updateReview(id,data)//need to put an id here
+      .then(response => {
+        console.log(response.data);
+        
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   return (
     <Card className="w-50">
       <Card.Img variant="top" src={toiletpic} />
       <Card.Body>
         {currentUser?(
           currentUser.username == username?(
+            <div reviewButtons>
             <Button id="deleteReviewButton" onClick={deleteReview}>Delete</Button>
+            <Button id="updateReviewButton" onClick={updateReview}>Update</Button>
+            </div>
           ):(
             <></>
           )
