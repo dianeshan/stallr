@@ -70,6 +70,7 @@ const Home = () => {
               rating={review.rating}
               location={review.location}
               comments={review.comments}
+              images={review.images}
             />
           </div>
         ))}
