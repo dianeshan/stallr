@@ -7,7 +7,7 @@ import AuthService from "../services/auth.service";
 
 
 
-const Review = ({ username, date, location, description, rating }) => {
+const Review = ({ username, date, location, description, rating, id}) => {
 
   const [currentUser, setCurrentUser] = useState(undefined);
 
@@ -21,7 +21,7 @@ const Review = ({ username, date, location, description, rating }) => {
 
   const deleteReview = () => {
     
-    ReviewService.deleteReview()//need to put an id here
+    ReviewService.deleteReview(id)//need to put an id here
       .then(response => {
         console.log(response.data);
         
@@ -35,12 +35,17 @@ const Review = ({ username, date, location, description, rating }) => {
     <Card className="w-50">
       <Card.Img variant="top" src={toiletpic} />
       <Card.Body>
-        {currentUser.username == username?(
-          <Button id="deleteReviewButton">Delete</Button>
-        ):(
+        {currentUser?(
+          currentUser.username == username?(
+            <Button id="deleteReviewButton" onClick={deleteReview}>Delete</Button>
+          ):(
+            <></>
+          )
+          )
+          :(
           <></>
         )
-        }
+      }
         <Card.Text>{username}</Card.Text>
         <Card.Text>{location}</Card.Text>
         <Card.Text>{new Date(date).toLocaleString()}</Card.Text>
