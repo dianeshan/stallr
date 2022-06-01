@@ -132,6 +132,20 @@ exports.deleteAllReviews = (req, res) => {
     });
 };
 
+exports.findAllUserReviews = (req, res) => {
+  Review.find({ username: req.body.username })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving reviews for user.",
+      });
+    });
+};
+
 // Find all published reviews
 exports.findAllPublishedReviews = (req, res) => {
   Review.find({ published: true })
