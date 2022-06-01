@@ -15,7 +15,7 @@ exports.createReview = async (req, res) => {
 
   var pathname = req.body.images;
   var filename = pathname.replace(/^C:\\fakepath\\/, "");
-  var filename = __dirname + "/uploads/" + filename;
+  filename = __dirname + "/uploads/" + filename;
   var type = "image/png";
 
   if (filename.toLowerCase().endsWith(".jpg")) {

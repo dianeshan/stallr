@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { Buffer } from "buffer";
 
-import toiletpic from "../resources/images/temp-toilet.jpeg";
-
 import Comment from "./Comment";
 
 const Review = ({
