@@ -5,28 +5,47 @@ const Comment = db.comment;
 // Create and Save a new comment
 exports.createComment = async (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body) {
     res.status(400).send({ message: "Can't be empty!" });
     return;
   }
 
-  const review = await Review.findById(req.params.id);
+  console.log(req.body.id);
+  //const review = await Review.findById(req.body.id);
 
-  const comment = new Comment(req.body.comment);
-  comment.date = Date.now();
-  comment.username = req.user.username;
-  review.comments.push(comment);
+  const comment = new Comment({
+    username: req.body.username,
+    message: req.body.message,
+    date: Date.now(),
+  });
+
+  //review.comments.push(comment);
 
   // Save comment in the database
   comment
     .save(comment)
     .then((data) => {
-      res.send(data);
+      //res.send(data);
       console.log(data);
     })
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while creating comment.",
+      });
+    });
+  
+  const id = req.body.id;
+  Review.updateOne({ _id: id }, { $addToSet: { comments: comment } })
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Cannot add comment to review with id=${id}. Perhaps review not found!`,
+        });
+      } else res.send({ message: "Added comment successfully." });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error adding comment to review with id " + id,
       });
     });
 };
