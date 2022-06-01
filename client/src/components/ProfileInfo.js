@@ -32,25 +32,6 @@ function ProfileInfo() {
         console.log(response.data);
         var updateUser = JSON.parse(localStorage.getItem("user"));
         updateUser.bio = bio;
-
-        var pathname = pfp;
-        var nameOfFile = pathname.replace(/^C:\\fakepath\\/, "");
-        nameOfFile = __dirname + "/uploads/" + nameOfFile;
-        var type = "image/png";
-
-        if (nameOfFile.toLowerCase().endsWith(".jpg")) {
-          type = "image/jpg";
-        } else if (nameOfFile.toLowerCase().endsWith(".jpeg")) {
-          type = "image/jpeg";
-        }
-
-        var reader = new FileReader();
-        var url = reader.readAsDataURL(nameOfFile);
-
-        updateUser.pfp.data = url;
-        updateUser.pfp.contentType = type;
-        console.log("hi");
-        console.log(pfp);
         localStorage.setItem("user", JSON.stringify(updateUser));
         window.location.reload();
       })
