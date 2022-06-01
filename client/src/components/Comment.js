@@ -69,6 +69,7 @@ const Comment = ({id, comments}) => {
                         <p>{comment.data.message}</p>
                         <p>{new Date(comment.data.date).toLocaleString()}</p>
                     </li>
+                    { (comment.data.username === currentUser.username) && <Button variant="danger" onClick={() => CommentService.deleteComment(id, comment.data._id)}>Delete Comment</Button> }
                 </ul>
             ))}
         </div>
