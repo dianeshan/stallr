@@ -12,7 +12,6 @@ const getComment = (id) => {
 }
 
 const deleteComment = (id, data) => {
-    console.log(data);
     return axios.delete(API_URL + `${id}`, {data : {data}});
 };
 
