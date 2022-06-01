@@ -16,6 +16,26 @@ exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Board");
 };
 
+exports.getUser = (req, res) => {
+  const id = req.params.id;
+
+  User.findById(id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: "Could not find user with id " + id,
+        });
+      } else {
+        res.send(data);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not get user with id " + id,
+      });
+    });
+}
+
 exports.findAllUsers = (req, res) => {
   User.find()
     .then((data) => {
