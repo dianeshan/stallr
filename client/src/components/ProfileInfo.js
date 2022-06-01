@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Nav, Button, Modal } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Button, Modal, Figure } from "react-bootstrap";
 
 import AuthService from "../services/auth.service";
 import Pfp from "./Pfp";
@@ -9,10 +9,27 @@ import UserService from "../services/user.service";
 function ProfileInfo() {
   var currentUser = AuthService.getCurrentUser();
 
-  const [show, setShow] = useState(false);
+  const [friendsList, setFriendsList] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showFriends, setShowFriends] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleCloseEdit = () => setShowEdit(false);
+  const handleCloseFriends = () => setShowFriends(false);
+  const handleShowEdit = () => setShowEdit(true);
+  const handleShowFriends = () => setShowFriends(true);
+
+  useEffect(() => {
+    async function resolvePromises() {
+        var temp = [];
+        var tempUser = await UserService.getUser(currentUser.id);
+        for (let i = 0; i < tempUser.data.friends.length; i++) {
+            var temp2 = await UserService.getUser(tempUser.data.friends[i])
+            temp.push(temp2);
+        }
+        setFriendsList(temp);
+    }
+    resolvePromises();
+  }, [currentUser])
 
   const handleSubmit = (bio, pfp) => {
     console.log(bio);
@@ -40,6 +57,8 @@ function ProfileInfo() {
       });
   };
 
+  //console.log(friendsList[0]);
+
   return (
     <div>
       <Container style={{ marginTop: 100 }}>
@@ -57,25 +76,58 @@ function ProfileInfo() {
         </Row>
         <Row className="align-middle">
           <Col md={{ span: 1, offset: 7 }}>
-            <Nav.Link href="Friends">Friends</Nav.Link>
+            <Button variant="primary" onClick={handleShowFriends}>Friends</Button>
           </Col>
           <Col md={1}>
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="primary" onClick={handleShowEdit}>
               Edit Profile
             </Button>
           </Col>
         </Row>
       </Container>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showFriends} onHide={handleCloseFriends}>
+        <Modal.Header closeButton>
+          <Modal.Title>Friends List</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          { friendsList && friendsList.map((friend, index) => (
+            <Container key={index}>
+              <Row>
+                <Col className="align-left">
+                  <Figure>
+                    <Figure.Image
+                      width={75}
+                      height={75}
+                      src={`data:${friend.data.pfp.contentType};base64, ${friend.data.pfp.data}`}
+                      roundedCircle={true}
+                      alt="profile"
+                    />
+                  </Figure>
+                </Col>
+                <Col>
+                  {friend.data.username}
+                </Col>
+              </Row>
+            </Container>
+          ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseFriends}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showEdit} onHide={handleCloseEdit}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditProfile onSubmit={handleSubmit} handleClose={handleClose} />
+          <EditProfile onSubmit={handleSubmit} handleClose={handleCloseEdit} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleCloseEdit}>
             Close
           </Button>
         </Modal.Footer>

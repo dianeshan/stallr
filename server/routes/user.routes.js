@@ -9,6 +9,8 @@ module.exports = function (app) {
 
   app.get("/api/users/friends", users.findAllFriends);
 
+  app.get("/api/users/:id", users.getUser);
+
   app.put("/api/users/:id", users.updateUser);
 
   app.use(function (req, res, next) {

@@ -22,6 +22,10 @@ const update = (id, data) => {
   });
 };
 
+const getUser = (id) => {
+  return axios.get(API_URL + `${id}`);
+}
+
 const addfriend = (id, data) => {
   return axios.post(API_URL + `friends/${id}`, data);
 };
@@ -30,6 +34,7 @@ const UserService = {
   getAdminBoard,
   update,
   getAll,
+  getUser,
   addfriend,
 };
 
