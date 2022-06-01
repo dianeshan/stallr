@@ -50,6 +50,26 @@ exports.createComment = async (req, res) => {
     });
 };
 
+exports.getComment = async (req, res) => {
+  const id = req.params.id;
+
+  Comment.findById(id)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: "Could not find comment with id " + id,
+        });
+      } else {
+        res.send(data);
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not get comment with id " + id,
+      });
+    });
+};
+
 exports.deleteComment = async (req, res) => {
   const { id, commentId } = req.params;
   await Review.findByIdAndUpdate(id, { $pull: { comments: commentId } });

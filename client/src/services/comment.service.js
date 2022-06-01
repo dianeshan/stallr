@@ -7,12 +7,17 @@ const createComment = (data) => {
     return axios.post(API_URL, data);
 };
 
+const getComment = (id) => {
+    return axios.get(API_URL + `${id}`);
+}
+
 const deleteComment = (id) => {
     return axios.delete(API_URL + `${id}`);
 };
 
 const CommentService = {
     createComment,
+    getComment,
     deleteComment,
 };
 

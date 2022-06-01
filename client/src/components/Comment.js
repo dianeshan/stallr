@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
 import CommentService from "../services/comment.service";
@@ -8,6 +8,20 @@ const Comment = ({id, comments}) => {
     const currentUser = AuthService.getCurrentUser();
 
     const [form, setForm] = useState("");
+
+    const [commentList, setCommentList] = useState([]);
+
+    useEffect(() => {
+        async function resolvePromises() {
+            var temp = [];
+            for (let i = 0; i < comments.length; i++) {
+                var temp2 = await CommentService.getComment(comments[i])
+                temp.push(temp2);
+            }
+            setCommentList(temp);
+        }
+        resolvePromises();
+    }, [comments])
 
     const updateForm = (e) => {
         const {value} = e.target
@@ -30,6 +44,7 @@ const Comment = ({id, comments}) => {
             });
     };
 
+    console.log(commentList);
     return (
         <div>
             <Form>
@@ -48,12 +63,12 @@ const Comment = ({id, comments}) => {
             <Button variant="primary" onClick={submitComment}>
                 Submit
             </Button>
-            { comments && comments.map((comment, index) => (
-                <ul>
-                    <li className="comment" key={index}>
-                        <p>{comment.username}</p>
-                        <p>{comment.message}</p>
-                        <p>{comment.date}</p>
+            { commentList && commentList.map((comment, index) => (
+                <ul key={index}>
+                    <li className="comment">
+                        <p>{comment.data.username}</p>
+                        <p>{comment.data.message}</p>
+                        <p>{new Date(comment.data.date).toLocaleString()}</p>
                     </li>
                 </ul>
             ))}
