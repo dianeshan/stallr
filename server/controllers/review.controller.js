@@ -1,7 +1,6 @@
 const db = require("../models");
 const Review = db.review;
 
-// const fs = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
 
