@@ -1,6 +1,7 @@
 import { Card, Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { Buffer } from "buffer";
+import "../resources/styles/Review.css"
 
 import Comment from "./Comment";
 import ReviewService from "../services/review.service";
@@ -43,6 +44,8 @@ const Review = ({
 
   return (
     <Card className="w-50">
+      <Card.Text class="locationName">{location}</Card.Text>
+      <Card.Text id="ratingInfo">Rating: {rating}/10</Card.Text>
       <Card.Img
         variant="top"
         src={`data:${images.contentType};base64, ${Buffer.from(
@@ -89,12 +92,13 @@ const Review = ({
         ) : (
           <></>
         )}
-        <Card.Text>{username}</Card.Text>
-        <Card.Text>{location}</Card.Text>
-        <Card.Text>{new Date(date).toLocaleString()}</Card.Text>
-        <Card.Text>Rating: {rating}/10</Card.Text>
+        
         <Card.Text>{description}</Card.Text>
-        <Button variant="light" onClick={updateToggle}>
+        <Card.Text class = "card-username">{username}</Card.Text>
+        <Card.Text class = "dateInfo">{new Date(date).toLocaleString()}</Card.Text>
+        
+        
+        <Button variant="light" onClick={updateToggle} id="commentButton">
           Comments
         </Button>
         {toggle && <Comment id={id} comments={comments} />}
