@@ -68,6 +68,7 @@ const Home = () => {
               description={review.description}
               rating={review.rating}
               location={review.location}
+              id={review._id}
             />
           </div>
         ))}
