@@ -2,7 +2,7 @@ const upload = require("../middlewares/uploadImages");
 require("dotenv").config({ path: "../config.env" });
 const fs = require("fs");
 
-const url = "http://localhost:3000/server/public/";
+const url = "http://localhost:3000/server/controller/uploads";
 
 exports.uploadFiles = async (req, res) => {
   try {
