@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPenToSquare,
   faXmark,
-  // faLocationDot,
+  faLocationDot,
+  faComments,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "../resources/styles/Review.css";
@@ -53,10 +55,14 @@ const Review = ({
   return (
     <Card className={profile ? "" : "w-50"}>
       <Card.Text className="locationName">
-        {/* <FontAwesomeIcon icon={faLocationDot} /> */}
-        {location}{" "}
+        <FontAwesomeIcon icon={faLocationDot} /> {location}{" "}
       </Card.Text>
-      <Card.Text id="ratingInfo">Rating: {rating}/10 </Card.Text>
+      <Card.Text id="ratingInfo">
+        Rating: {rating}/10{" "}
+        {[...Array(rating)].map((elementInArray, i) => (
+          <FontAwesomeIcon key={i} icon={faStar} />
+        ))}
+      </Card.Text>
       <Card.Img
         variant="top"
         src={`data:${images.contentType};base64, ${Buffer.from(
@@ -113,8 +119,12 @@ const Review = ({
         </div>
         <Card.Text>{description}</Card.Text>
 
-        <Button variant="light" onClick={updateToggle} id="commentButton">
-          Comments
+        <Button
+          variant="outline-dark"
+          onClick={updateToggle}
+          id="commentButton"
+        >
+          <FontAwesomeIcon icon={faComments} />
         </Button>
         {toggle && <Comment id={id} comments={comments} />}
       </Card.Body>

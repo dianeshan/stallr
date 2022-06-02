@@ -145,6 +145,8 @@ const EditReview = ({ id, location, description, rating, images }) => {
             value={form.rating}
             onChange={updateForm}
             type="number"
+            max="10"
+            min="0"
             placeholder="Enter rating"
           />
         </Form.Group>
