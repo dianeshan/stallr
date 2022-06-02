@@ -78,6 +78,7 @@ const Review = ({
                     location={location}
                     description={description}
                     rating={rating}
+                    images={images}
                   />
                 </Modal.Body>
               </Modal>

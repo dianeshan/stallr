@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 
 import ReviewService from "../services/review.service";
 import AuthService from "../services/auth.service";
+import UploadService from "../services/upload.service";
 
 const EditReview = ({ id, location, description, rating, images }) => {
   const currentUser = AuthService.getCurrentUser();
@@ -15,10 +16,54 @@ const EditReview = ({ id, location, description, rating, images }) => {
   };
 
   const [form, setForm] = useState(initialReviewState);
+  const [selectedFiles, setSelectedFiles] = useState(undefined);
+  const [progressInfos, setProgressInfos] = useState({ val: [] });
+  const progressInfosRef = useRef(null);
 
   const updateForm = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+  };
+
+  const selectFiles = (e) => {
+    setSelectedFiles(e.target.files);
+    setProgressInfos({ val: [] });
+  };
+
+  const upload = (idx, file) => {
+    let _progressInfos = [...progressInfosRef.current.val];
+    return UploadService.upload(file, (event) => {
+      _progressInfos[idx].percentage = Math.round(
+        (100 * event.loaded) / event.total
+      );
+      setProgressInfos({ val: _progressInfos });
+    })
+      .then(() => {
+        console.log(file.name);
+      })
+      .catch(() => {
+        _progressInfos[idx].percentage = 0;
+        setProgressInfos({ val: _progressInfos });
+
+        console.log(file.name);
+      });
+  };
+
+  const uploadFiles = () => {
+    const files = Array.from(selectedFiles);
+
+    let _progressInfos = files.map((file) => ({
+      percentage: 0,
+      fileName: file.name,
+    }));
+
+    progressInfosRef.current = {
+      val: _progressInfos,
+    };
+
+    const uploadPromises = files.map((file, i) => upload(i, file));
+
+    Promise.all(uploadPromises);
   };
 
   const updateReview = () => {
@@ -46,6 +91,27 @@ const EditReview = ({ id, location, description, rating, images }) => {
 
   return (
     <div>
+      {progressInfos &&
+        progressInfos.val.length > 0 &&
+        progressInfos.val.map((progressInfo, index) => (
+          <div className="mb-2" key={index}>
+            <span>{progressInfo.fileName}</span>
+            {progressInfo.percentage < 100 && (
+              <div className="progress">
+                <div
+                  className="progress-bar progress-bar-info"
+                  role="progressbar"
+                  aria-valuenow={progressInfo.percentage}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  style={{ width: progressInfo.percentage + "%" }}
+                >
+                  {progressInfo.percentage}%
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
       <Form>
         <Form.Group className="mb-3">
           <Form.Label>Toilet Location</Form.Label>
@@ -83,17 +149,27 @@ const EditReview = ({ id, location, description, rating, images }) => {
           />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Iamges</Form.Label>
+          <Form.Label>Images</Form.Label>
           <Form.Control
             name="images"
             type="file"
             multiple
             id="images"
-            value={form.images}
-            onChange={updateForm}
+            // value={form.images}
+            onChange={(e) => {
+              updateForm(e);
+              selectFiles(e);
+            }}
           />
         </Form.Group>
-        <Button onClick={updateReview} variant="primary" type="submit">
+        <Button
+          onClick={(e) => {
+            uploadFiles();
+            updateReview();
+          }}
+          variant="primary"
+          type="submit"
+        >
           Submit
         </Button>
       </Form>

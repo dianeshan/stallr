@@ -87,7 +87,7 @@ exports.findOneReview = (req, res) => {
 };
 
 // Update a Review by the id in the request
-exports.updateReview = (req, res) => {
+exports.updateReview = async (req, res) => {
   if (!req.body) {
     return res.status(400).send({
       message: "Cannot be empty!",
@@ -96,7 +96,34 @@ exports.updateReview = (req, res) => {
 
   const id = req.params.id;
 
-  Review.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  var pathname = req.body.images;
+  var filename = pathname.replace(/^C:\\fakepath\\/, "");
+  filename = __dirname + "/uploads/" + filename;
+  var type = "image/png";
+
+  if (filename.toLowerCase().endsWith(".jpg")) {
+    type = "image/jpg";
+  } else if (filename.toLowerCase().endsWith(".jpeg")) {
+    type = "image/jpeg";
+  }
+
+  Review.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        username: req.body.username,
+        location: req.body.location,
+        description: req.body.description,
+        rating: req.body.rating,
+        images: {
+          data: await fs.readFile(filename),
+          contentType: type,
+        },
+        published: true,
+      },
+    },
+    { useFindAndModify: false }
+  )
     .then((data) => {
       if (!data) {
         res.status(404).send({
