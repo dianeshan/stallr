@@ -1,7 +1,7 @@
 import { Card, Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { Buffer } from "buffer";
-import "../resources/styles/Review.css"
+import "../resources/styles/Review.css";
 
 import Comment from "./Comment";
 import ReviewService from "../services/review.service";
@@ -44,7 +44,7 @@ const Review = ({
 
   return (
     <Card className="w-50">
-      <Card.Text class="locationName">{location}</Card.Text>
+      <Card.Text className="locationName">{location}</Card.Text>
       <Card.Text id="ratingInfo">Rating: {rating}/10</Card.Text>
       <Card.Img
         variant="top"
@@ -53,9 +53,11 @@ const Review = ({
         ).toString("base64")}`}
       />
       <Card.Body>
-      <div class="infoHeader">
-        <Card.Text class = "card-username">{username}</Card.Text>
-        <Card.Text class = "dateInfo">{new Date(date).toLocaleString()}</Card.Text>
+        <div className="infoHeader">
+          <Card.Text className="card-username">{username}</Card.Text>
+          <Card.Text className="dateInfo">
+            {new Date(date).toLocaleString()}
+          </Card.Text>
         </div>
         <Card.Text>{description}</Card.Text>
         {currentUser ? (
@@ -97,10 +99,7 @@ const Review = ({
         ) : (
           <></>
         )}
-        
-        
-        
-        
+
         <Button variant="light" onClick={updateToggle} id="commentButton">
           Comments
         </Button>
