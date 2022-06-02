@@ -73,8 +73,12 @@ function ProfileInfo() {
   return (
     <div>
       <Container style={{ marginTop: 100 }}>
-        <Row style={{ marginBottom: 10, fontSize: 20 }}>
-          <Col>{currentUser.username}</Col>
+        <Row style={{ marginBottom: 10, fontSize: 24 }}>
+          <Col>
+            <span style={{fontWeight: "bold"}}>
+                {currentUser.username}
+            </span>
+          </Col>
           <Col></Col>
         </Row>
         <Row>
@@ -95,7 +99,7 @@ function ProfileInfo() {
             </Figure>
           </Col>
         </Row>
-        <Row className="align-middle">
+        <Row className="align-middle align-items-center">
           <Col md={{ span: 1, offset: 7 }}>
             <Button variant="primary" onClick={handleShowFriends}>
               Friends
@@ -117,7 +121,7 @@ function ProfileInfo() {
           {friendsList &&
             friendsList.map((friend, index) => (
               <Container key={index}>
-                <Row>
+                <Row className="align-items-center">
                   <Col lg={3} className="align-left">
                     <Figure>
                       <Figure.Image
@@ -133,7 +137,11 @@ function ProfileInfo() {
                       />
                     </Figure>
                   </Col>
-                  <Col>{friend.data.username}</Col>
+                  <Col>
+                    <span style={{fontSize: "24px", fontWeight: "bold"}}>
+                      {friend.data.username}
+                    </span>
+                  </Col>
                 </Row>
               </Container>
             ))}
