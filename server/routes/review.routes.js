@@ -1,5 +1,6 @@
 module.exports = (app) => {
   const reviews = require("../controllers/review.controller.js");
+  var upload = require("../middlewares/uploadImages");
 
   var router = require("express").Router();
 
@@ -8,6 +9,8 @@ module.exports = (app) => {
 
   // Retrieve all reviews
   router.get("/", reviews.findAllReviews);
+
+  router.get("/user-reviews/:id", reviews.findAllUserReviews);
 
   // Retrieve all published reviews
   router.get("/published", reviews.findAllPublishedReviews);

@@ -1,12 +1,28 @@
 import { Card, Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
-import toiletpic from "../resources/images/temp-toilet.jpeg";
+import { Buffer } from "buffer";
 
+import Comment from "./Comment";
 import ReviewService from "../services/review.service";
 import AuthService from "../services/auth.service";
 import EditReview from "./EditReview";
 
-const Review = ({ username, date, location, description, rating, id }) => {
+const Review = ({
+  id,
+  username,
+  date,
+  location,
+  description,
+  rating,
+  comments,
+  images,
+}) => {
+  const [toggle, setToggle] = useState(false);
+
+  const updateToggle = () => {
+    setToggle(!toggle);
+  };
+
   const currentUser = AuthService.getCurrentUser();
 
   const [show, setShow] = useState(false);
@@ -27,7 +43,12 @@ const Review = ({ username, date, location, description, rating, id }) => {
 
   return (
     <Card className="w-50">
-      <Card.Img variant="top" src={toiletpic} />
+      <Card.Img
+        variant="top"
+        src={`data:${images.contentType};base64, ${Buffer.from(
+          images.data
+        ).toString("base64")}`}
+      />
       <Card.Body>
         {currentUser ? (
           currentUser.username === username ? (
@@ -72,7 +93,10 @@ const Review = ({ username, date, location, description, rating, id }) => {
         <Card.Text>{new Date(date).toLocaleString()}</Card.Text>
         <Card.Text>Rating: {rating}/10</Card.Text>
         <Card.Text>{description}</Card.Text>
-        <Button variant="light">Comments</Button>
+        <Button variant="light" onClick={updateToggle}>
+          Comments
+        </Button>
+        {toggle && <Comment id={id} comments={comments} />}
       </Card.Body>
     </Card>
   );
