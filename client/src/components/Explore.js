@@ -9,12 +9,24 @@ const Explore = () => {
   const yourself = AuthService.getCurrentUser();
 
   const [users, setUsers] = useState([]);
+  const [friendsList, setFriendsList] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   useEffect(() => {
+    async function resolvePromises() {
+      var temp = [];
+      var tempUser = await UserService.getUser(yourself.id);
+      for (let i = 0; i < tempUser.data.friends.length; i++) {
+        var temp2 = await UserService.getUser(tempUser.data.friends[i]);
+        temp.push(temp2);
+      }
+      setFriendsList(temp);
+    }
+
+    resolvePromises();
     retrieveUsers();
-  }, []);
+  }, [yourself.id]);
 
   const retrieveUsers = () => {
     UserService.getAll()
@@ -32,10 +44,19 @@ const Explore = () => {
     setCurrentIndex(index);
   };
 
+  const cleanArray = () => {
+    var temp = [];
+    for (let i = 0; i < friendsList.length; i++) {
+      temp.push(friendsList[i].data._id);
+    }
+    return temp;
+  }
+
   const addFriend = () => {
     UserService.addfriend(yourself.id, currentUser)
       .then((response) => {
         console.log(response.data);
+        window.location.reload();
       })
       .catch((e) => {
         console.log(e);
@@ -61,7 +82,7 @@ const Explore = () => {
                 >
                   {user.username}
                 </li>
-              ))}
+            ))}
           </ul>
         </div>
         <div className="col-md-6">
@@ -97,7 +118,7 @@ const Explore = () => {
                   {currentUser.bio}
                 </div>
               </Card>
-              <Button onClick={addFriend}>Add Friend</Button>
+              { ((cleanArray().includes(currentUser._id) === false) && currentUser._id !== yourself.id) && <Button onClick={addFriend}>Add Friend</Button> }
             </div>
           ) : (
             <div>
