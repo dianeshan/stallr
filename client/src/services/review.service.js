@@ -15,6 +15,10 @@ const findOneReview = (id) => {
   return axios.get(API_URL + `${id}`);
 };
 
+const findUserReviews = (data) => {
+  return axios.get(API_URL + "user-reviews", data);
+};
+
 const updateReview = (id, data) => {
   return axios.put(API_URL + `${id}`, data);
 };
@@ -39,6 +43,7 @@ const ReviewService = {
   deleteReview,
   deleteAllReviews,
   findAllPublishedReviews,
+  findUserReviews,
 };
 
 export default ReviewService;

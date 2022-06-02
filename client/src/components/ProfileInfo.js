@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Modal, Figure } from "react-bootstrap";
 import { Buffer } from "buffer";
-import "../resources/styles/ProfileInfo.css"
 
+import "../resources/styles/ProfileInfo.css";
 import AuthService from "../services/auth.service";
-import EditProfile from "./EditProfile";
 import UserService from "../services/user.service";
+import ReviewService from "../services/review.service";
+import EditProfile from "./EditProfile";
+import Review from "./Review";
 
 function ProfileInfo() {
-  var currentUser = AuthService.getCurrentUser();
+  const currentUser = AuthService.getCurrentUser();
 
   const [friendsList, setFriendsList] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
   const [showFriends, setShowFriends] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   const handleCloseEdit = () => setShowEdit(false);
   const handleCloseFriends = () => setShowFriends(false);
@@ -23,6 +26,12 @@ function ProfileInfo() {
     async function resolvePromises() {
       var temp = [];
       var tempUser = await UserService.getUser(currentUser.id);
+      var updateUser = JSON.parse(localStorage.getItem("user"));
+      updateUser.pfp.data = Buffer.from(tempUser.data.pfp.data).toString(
+        "base64"
+      );
+      updateUser.pfp.contentType = tempUser.data.pfp.contentType;
+      localStorage.setItem("user", JSON.stringify(updateUser));
       for (let i = 0; i < tempUser.data.friends.length; i++) {
         var temp2 = await UserService.getUser(tempUser.data.friends[i]);
         temp.push(temp2);
@@ -33,17 +42,19 @@ function ProfileInfo() {
   }, [currentUser]);
 
   useEffect(() => {
-    async function resolvePromises() {
-      var tempUser = await UserService.getUser(currentUser.id);
-      var updateUser = JSON.parse(localStorage.getItem("user"));
-      updateUser.pfp.data = Buffer.from(tempUser.data.pfp.data).toString(
-        "base64"
-      );
-      updateUser.pfp.contentType = tempUser.data.pfp.contentType;
-      localStorage.setItem("user", JSON.stringify(updateUser));
-    }
-    resolvePromises();
-  }, [currentUser]);
+    retrieveReviews();
+  }, []);
+
+  const retrieveReviews = () => {
+    ReviewService.getAll()
+      .then((response) => {
+        setReviews(response.data);
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   const handleSubmit = (bio, pfp) => {
     console.log(bio);
@@ -74,16 +85,14 @@ function ProfileInfo() {
   return (
     <div>
       <Container style={{ marginTop: 0 }}>
-        <Row style={{ marginBottom: 10, fontSize: 32, textAlign:"left" }}>
+        <Row style={{ marginBottom: 10, fontSize: 32, textAlign: "left" }}>
           <Col>
-            <span style={{fontWeight: "bold"}}>
-                {currentUser.username}
-            </span>
+            <span style={{ fontWeight: "bold" }}>{currentUser.username}</span>
           </Col>
           <Col></Col>
         </Row>
         <Row>
-        <Col md="auto">
+          <Col md="auto">
             <Figure>
               <Figure.Image
                 width={150}
@@ -96,10 +105,9 @@ function ProfileInfo() {
               />
             </Figure>
           </Col>
-          <Col className="align-left" style={{textAlign:"left"}}>
+          <Col className="align-left" style={{ textAlign: "left" }}>
             {currentUser.bio}
           </Col>
-          
         </Row>
         <div className="align-middle align-items-center">
           <div>
@@ -113,6 +121,33 @@ function ProfileInfo() {
             </Button>
           </div>
         </div>
+      </Container>
+
+      <Container>
+        <Row>
+          {reviews &&
+            reviews.map((review, index) => (
+              <Col
+                key={index}
+                className={
+                  review.username === currentUser.username ? "" : "hidden"
+                }
+                lg={4}
+              >
+                <Review
+                  id={review._id}
+                  username={review.username}
+                  date={review.date}
+                  description={review.description}
+                  rating={review.rating}
+                  location={review.location}
+                  comments={review.comments}
+                  images={review.images}
+                  profile={true}
+                />
+              </Col>
+            ))}
+        </Row>
       </Container>
 
       <Modal show={showFriends} onHide={handleCloseFriends}>
@@ -140,7 +175,7 @@ function ProfileInfo() {
                     </Figure>
                   </Col>
                   <Col>
-                    <span style={{fontSize: "24px", fontWeight: "bold"}}>
+                    <span style={{ fontSize: "24px", fontWeight: "bold" }}>
                       {friend.data.username}
                     </span>
                   </Col>

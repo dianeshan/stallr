@@ -42,7 +42,7 @@ exports.createReview = async (req, res) => {
     .save(review)
     .then((data) => {
       res.send(data);
-      console.log(data);
+      // console.log(data);
     })
     .catch((err) => {
       res.status(500).send({

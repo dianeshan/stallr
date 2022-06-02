@@ -89,7 +89,7 @@ const Comment = ({ id, comments }) => {
                   )}
                 </span>
               </div>
-              <p>{comment.data.message}</p>
+              <div>{comment.data.message}</div>
             </li>
           </ul>
         ))}
