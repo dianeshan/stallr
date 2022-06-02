@@ -1,67 +1,70 @@
-
-#deleteReviewButton{
-    margin-right:auto;
-    
-    
-}
-#updateReviewButton{
-    margin-left:auto;
-    
+#deleteReviewButton {
+  margin-right: auto;
 }
 
-.reviewButtons{
-    display:flex;
-    margin-bottom:0px;
-    margin-top:10px;
-    
+#updateReviewButton {
+  margin-left: auto;
+}
+.reviewButtons {
+  display: flex;
+  margin-bottom: 0px;
+  margin-top: 10px;
 }
 
-.card-body{
-    text-align:left;
-}
-.card-username{
-    text-align:left;
-    font-size:14px;
-    color:#000000;
-    font-weight:700;
-}
-.locationName{
-    text-align:left;
-    font-size:32px;
-    
+.modify-buttons {
+  text-align: right;
+  /* margin-left: 13em;
+  padding-left: 1em;
+  margin-right: -2em; */
+  justify-content: right;
+  float: right;
 }
 
-.dateInfo{
-    color:#6b6b6b;
-    font-size:10px;
-    margin-top:auto;
-    margin-left:5px;
+.card-body {
+  text-align: left;
+}
+.card-username {
+  text-align: left;
+  font-size: 14px;
+  color: #000000;
+  font-weight: 700;
 }
 
-p{
-    margin-bottom:0;
-}
-#ratingInfo{
-    
-    font-size:24px;
-    text-align:left;
-    margin-bottom:10px;
+.locationName {
+  text-align: left;
+  font-size: 32px;
 }
 
-.card{
-    padding:10px 10px 5px;
+.dateInfo {
+  color: #6b6b6b;
+  font-size: 10px;
+  margin-top: auto;
+  margin-left: 5px;
 }
 
-.card-body{
-    padding:0px;
-    padding-top: 10px;
+p {
+  margin-bottom: 0;
+}
+#ratingInfo {
+  font-size: 24px;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
-#commentButton{
-    margin-top:10px;
-    background-color:#ebe9e9;
+.card {
+  padding: 10px 10px 5px;
 }
 
-.infoHeader{
-    display:inline-flex;
+.card-body {
+  padding: 0px;
+  padding-top: 10px;
+}
+
+#commentButton {
+  margin-top: 10px;
+  background-color: #ebe9e9;
+}
+
+.infoHeader {
+  display: inline-flex;
 }

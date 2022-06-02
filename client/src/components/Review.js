@@ -1,6 +1,9 @@
 import { Card, Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { Buffer } from "buffer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+
 import "../resources/styles/Review.css";
 
 import Comment from "./Comment";
@@ -44,8 +47,8 @@ const Review = ({
 
   return (
     <Card className="w-50">
-      <Card.Text className="locationName">{location}</Card.Text>
-      <Card.Text id="ratingInfo">Rating: {rating}/10</Card.Text>
+      <Card.Text className="locationName">{location} </Card.Text>
+      <Card.Text id="ratingInfo">Rating: {rating}/10 </Card.Text>
       <Card.Img
         variant="top"
         src={`data:${images.contentType};base64, ${Buffer.from(
@@ -53,52 +56,54 @@ const Review = ({
         ).toString("base64")}`}
       />
       <Card.Body>
-        <div className="infoHeader">
-          <Card.Text className="card-username">{username}</Card.Text>
-          <Card.Text className="dateInfo">
-            {new Date(date).toLocaleString()}
+        <div>
+          <Card.Text className="card-username">
+            {username}{" "}
+            <span className="dateInfo">{new Date(date).toLocaleString()}</span>
+            {currentUser ? (
+              currentUser.username === username ? (
+                <div className="modify-buttons">
+                  <Button
+                    type="submit"
+                    variant="outline-danger"
+                    style={{ borderStyle: "none" }}
+                  >
+                    <FontAwesomeIcon icon={faXmark} onClick={deleteReview} />
+                  </Button>
+                  <Button
+                    variant="outline-info"
+                    style={{ borderStyle: "none" }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faPenToSquare}
+                      onClick={handleShow}
+                    />
+                  </Button>
+
+                  <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Edit Review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <EditReview
+                        id={id}
+                        location={location}
+                        description={description}
+                        rating={rating}
+                        images={images}
+                      />
+                    </Modal.Body>
+                  </Modal>
+                </div>
+              ) : (
+                <></>
+              )
+            ) : (
+              <></>
+            )}
           </Card.Text>
         </div>
         <Card.Text>{description}</Card.Text>
-        {currentUser ? (
-          currentUser.username === username ? (
-            <div className="reviewButtons">
-              <Button
-                id="deleteReviewButton"
-                variant="danger"
-                type="submit"
-                onClick={deleteReview}
-              >
-                Delete
-              </Button>
-              <Button
-                id="updateReviewButton"
-                variant="info"
-                onClick={handleShow}
-              >
-                Update
-              </Button>
-              <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Edit Review</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <EditReview
-                    id={id}
-                    location={location}
-                    description={description}
-                    rating={rating}
-                    images={images}
-                  />
-                </Modal.Body>
-              </Modal>
-            </div>
-          ) : (
-            <></>
-          )
-        ) : (
-          <></>
-        )}
 
         <Button variant="light" onClick={updateToggle} id="commentButton">
           Comments
