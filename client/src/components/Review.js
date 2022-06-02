@@ -53,6 +53,11 @@ const Review = ({
         ).toString("base64")}`}
       />
       <Card.Body>
+      <div class="infoHeader">
+        <Card.Text class = "card-username">{username}</Card.Text>
+        <Card.Text class = "dateInfo">{new Date(date).toLocaleString()}</Card.Text>
+        </div>
+        <Card.Text>{description}</Card.Text>
         {currentUser ? (
           currentUser.username === username ? (
             <div className="reviewButtons">
@@ -93,9 +98,7 @@ const Review = ({
           <></>
         )}
         
-        <Card.Text>{description}</Card.Text>
-        <Card.Text class = "card-username">{username}</Card.Text>
-        <Card.Text class = "dateInfo">{new Date(date).toLocaleString()}</Card.Text>
+        
         
         
         <Button variant="light" onClick={updateToggle} id="commentButton">

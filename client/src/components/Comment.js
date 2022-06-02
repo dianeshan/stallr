@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import "../resources/styles/Comment.css"
 
 import CommentService from "../services/comment.service";
 import AuthService from "../services/auth.service";
@@ -65,9 +66,12 @@ const Comment = ({id, comments}) => {
             { commentList && commentList.map((comment, index) => (
                 <ul key={index}>
                     <li className="comment">
-                        <p>{comment.data.username}</p>
+                        <p class="commentHeader">
+                        <div class = "commentUsername">{comment.data.username}</div>
+                        <div class="commentDate">{new Date(comment.data.date).toLocaleString()}</div>
+                        </p>
                         <p>{comment.data.message}</p>
-                        <p>{new Date(comment.data.date).toLocaleString()}</p>
+                        
                     </li>
                     { (comment.data.username === currentUser.username) && <Button variant="danger" onClick={() => CommentService.deleteComment(id, comment.data._id)}>Delete Comment</Button> }
                 </ul>

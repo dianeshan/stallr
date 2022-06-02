@@ -11,7 +11,8 @@
 
 .reviewButtons{
     display:flex;
-    margin-bottom:10px;
+    margin-bottom:0px;
+    margin-top:10px;
     
 }
 
@@ -21,7 +22,8 @@
 .card-username{
     text-align:left;
     font-size:14px;
-    color:#6b6b6b;
+    color:#000000;
+    font-weight:700;
 }
 .locationName{
     text-align:left;
@@ -32,6 +34,8 @@
 .dateInfo{
     color:#6b6b6b;
     font-size:10px;
+    margin-top:auto;
+    margin-left:5px;
 }
 
 p{
@@ -55,4 +59,9 @@ p{
 
 #commentButton{
     margin-top:10px;
+    background-color:#ebe9e9;
+}
+
+.infoHeader{
+    display:inline-flex;
 }

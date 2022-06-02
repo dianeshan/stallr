@@ -1,0 +1,18 @@
+ul{
+    list-style:none;
+}
+
+.commentUsername{
+    font-weight:700;
+}
+
+.commentDate{
+    font-size:10px;
+    color:#6b6b6b;
+    margin-top:auto;
+    margin-left:5px;
+}
+.commentHeader{
+    display:inline-flex;
+
+}
