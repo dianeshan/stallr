@@ -2,7 +2,13 @@ import { Card, Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { Buffer } from "buffer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faXmark,
+  faLocationDot,
+  faComments,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "../resources/styles/Review.css";
 
@@ -20,6 +26,7 @@ const Review = ({
   rating,
   comments,
   images,
+  profile,
 }) => {
   const [toggle, setToggle] = useState(false);
 
@@ -46,9 +53,16 @@ const Review = ({
   };
 
   return (
-    <Card className="w-50">
-      <Card.Text className="locationName">{location} </Card.Text>
-      <Card.Text id="ratingInfo">Rating: {rating}/10 </Card.Text>
+    <Card className={profile ? "" : "w-50"}>
+      <Card.Text className="locationName">
+        <FontAwesomeIcon icon={faLocationDot} /> {location}{" "}
+      </Card.Text>
+      <Card.Text id="ratingInfo">
+        Rating: {rating}/10{" "}
+        {[...Array(rating)].map((elementInArray, i) => (
+          <FontAwesomeIcon key={i} icon={faStar} />
+        ))}
+      </Card.Text>
       <Card.Img
         variant="top"
         src={`data:${images.contentType};base64, ${Buffer.from(
@@ -105,8 +119,12 @@ const Review = ({
         </div>
         <Card.Text>{description}</Card.Text>
 
-        <Button variant="light" onClick={updateToggle} id="commentButton">
-          Comments
+        <Button
+          variant="outline-dark"
+          onClick={updateToggle}
+          id="commentButton"
+        >
+          <FontAwesomeIcon icon={faComments} />
         </Button>
         {toggle && <Comment id={id} comments={comments} />}
       </Card.Body>

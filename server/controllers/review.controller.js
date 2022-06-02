@@ -1,7 +1,6 @@
 const db = require("../models");
 const Review = db.review;
 
-// const fs = require("fs");
 const fs = require("fs/promises");
 const path = require("path");
 
@@ -43,7 +42,7 @@ exports.createReview = async (req, res) => {
     .save(review)
     .then((data) => {
       res.send(data);
-      console.log(data);
+      // console.log(data);
     })
     .catch((err) => {
       res.status(500).send({

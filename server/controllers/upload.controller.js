@@ -7,7 +7,7 @@ const url = "http://localhost:3000/server/public/";
 exports.uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
-    console.log(req.file);
+    // console.log(req.file);
 
     if (req.file === undefined) {
       return res
