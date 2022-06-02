@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Modal, Figure } from "react-bootstrap";
 import { Buffer } from "buffer";
+import "../resources/styles/ProfileInfo.css"
 
 import AuthService from "../services/auth.service";
 import EditProfile from "./EditProfile";
@@ -72,8 +73,8 @@ function ProfileInfo() {
 
   return (
     <div>
-      <Container style={{ marginTop: 100 }}>
-        <Row style={{ marginBottom: 10, fontSize: 24 }}>
+      <Container style={{ marginTop: 0 }}>
+        <Row style={{ marginBottom: 10, fontSize: 32, textAlign:"left" }}>
           <Col>
             <span style={{fontWeight: "bold"}}>
                 {currentUser.username}
@@ -82,10 +83,7 @@ function ProfileInfo() {
           <Col></Col>
         </Row>
         <Row>
-          <Col className="align-left" md={{ span: 5, offset: 2 }}>
-            {currentUser.bio}
-          </Col>
-          <Col md="auto">
+        <Col md="auto">
             <Figure>
               <Figure.Image
                 width={150}
@@ -98,19 +96,23 @@ function ProfileInfo() {
               />
             </Figure>
           </Col>
+          <Col className="align-left" style={{textAlign:"left"}}>
+            {currentUser.bio}
+          </Col>
+          
         </Row>
-        <Row className="align-middle align-items-center">
-          <Col md={{ span: 1, offset: 7 }}>
+        <div className="align-middle align-items-center">
+          <div>
             <Button variant="primary" onClick={handleShowFriends}>
               Friends
             </Button>
-          </Col>
-          <Col md={1}>
+          </div>
+          <div>
             <Button variant="primary" onClick={handleShowEdit}>
               Edit Profile
             </Button>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
 
       <Modal show={showFriends} onHide={handleCloseFriends}>
