@@ -5,6 +5,7 @@ import ReviewService from "../services/review.service";
 import AuthService from "../services/auth.service";
 import Review from "./Review";
 import NewReview from "./NewReview";
+import "../resources/styles/Review.css";
 
 const Home = () => {
   const [show, setShow] = useState(false);
@@ -39,42 +40,44 @@ const Home = () => {
   };
 
   return (
-    <Container className="pt-4">
-      {currentUser && (
-        <div className="centered">
-          <Button variant="info" onClick={handleShow}>
-            New Review
-          </Button>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>New Review</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <NewReview />
-            </Modal.Body>
-          </Modal>
-        </div>
-      )}
-      {reviews &&
-        reviews.map((review, index) => (
-          <div
-            className={index === currentIndex ? "active" : ""}
-            onClick={() => setActiveReview(review, index)}
-            key={index}
-          >
-            <Review
-              id={review._id}
-              username={review.username}
-              date={review.date}
-              description={review.description}
-              rating={review.rating}
-              location={review.location}
-              comments={review.comments}
-              images={review.images}
-            />
+    <div className="home-background">
+      <Container className="pt-4">
+        {currentUser && (
+          <div className="centered">
+            <Button variant="info" onClick={handleShow}>
+              New Review
+            </Button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>New Review</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <NewReview />
+              </Modal.Body>
+            </Modal>
           </div>
-        ))}
-    </Container>
+        )}
+        {reviews &&
+          reviews.map((review, index) => (
+            <div
+              className={index === currentIndex ? "active" : ""}
+              onClick={() => setActiveReview(review, index)}
+              key={index}
+            >
+              <Review
+                id={review._id}
+                username={review.username}
+                date={review.date}
+                description={review.description}
+                rating={review.rating}
+                location={review.location}
+                comments={review.comments}
+                images={review.images}
+              />
+            </div>
+          ))}
+      </Container>
+    </div>
   );
 };
 
