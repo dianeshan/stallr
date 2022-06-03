@@ -13,9 +13,6 @@
 
 .modify-buttons {
   text-align: right;
-  /* margin-left: 13em;
-  padding-left: 1em;
-  margin-right: -2em; */
   justify-content: right;
   float: right;
 }
@@ -68,4 +65,8 @@ p {
 
 .infoHeader {
   display: inline-flex;
+}
+
+.home-background {
+  background-image: url(../images/toiletbackground.png);
 }

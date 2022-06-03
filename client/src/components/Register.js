@@ -173,9 +173,11 @@ const Register = () => {
               >
                 {message}
                 {successful && (
-                  <Button className="mt-2" variant="light" href="/login">
-                    Login
-                  </Button>
+                  <div>
+                    <Button className="mt-2" variant="light" href="/login">
+                      Login
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>

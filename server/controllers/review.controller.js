@@ -30,6 +30,7 @@ exports.createReview = async (req, res) => {
     location: req.body.location,
     description: req.body.description,
     rating: req.body.rating,
+    date: Date.now(),
     images: {
       data: await fs.readFile(filename),
       contentType: type,
