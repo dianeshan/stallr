@@ -127,6 +127,7 @@ const NewReview = () => {
             onChange={updateForm}
             type="text"
             placeholder="Enter location of toilet"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -140,6 +141,7 @@ const NewReview = () => {
             onChange={updateForm}
             type="text"
             placeholder="Enter description"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -153,6 +155,7 @@ const NewReview = () => {
             max="10"
             min="0"
             placeholder="Enter rating"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -167,6 +170,7 @@ const NewReview = () => {
               updateForm(e);
               selectFiles(e);
             }}
+            required
           />
         </Form.Group>
         <Button
