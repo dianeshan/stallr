@@ -18,10 +18,6 @@ const getFiles = () => {
   return axios.get(API_URL + "files");
 };
 
-// const getOneFile = (id) => {
-//   return axios.get(API_URL + `${id}`);
-// };
-
 const AuthService = {
   upload,
   getFiles,

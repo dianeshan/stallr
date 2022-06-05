@@ -84,6 +84,7 @@ const EditProfile = ({ onSubmit, handleClose }) => {
             placeholder="Enter bio"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
+            required
           />
         </Form.Group>
         <Form.Group>
@@ -96,9 +97,10 @@ const EditProfile = ({ onSubmit, handleClose }) => {
               setPfp(e.target.value);
               selectFiles(e);
             }}
+            required
           />
         </Form.Group>
-        <p></p>
+        <br></br>
         <Button
           variant="primary"
           onClick={(e) => {

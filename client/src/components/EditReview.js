@@ -122,6 +122,7 @@ const EditReview = ({ id, location, description, rating, images }) => {
             onChange={updateForm}
             type="text"
             placeholder="Enter location of toilet"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -135,6 +136,7 @@ const EditReview = ({ id, location, description, rating, images }) => {
             onChange={updateForm}
             type="text"
             placeholder="Enter description"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -148,6 +150,7 @@ const EditReview = ({ id, location, description, rating, images }) => {
             max="10"
             min="0"
             placeholder="Enter rating"
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -162,6 +165,7 @@ const EditReview = ({ id, location, description, rating, images }) => {
               updateForm(e);
               selectFiles(e);
             }}
+            required
           />
         </Form.Group>
         <Button

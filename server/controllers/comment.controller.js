@@ -10,22 +10,16 @@ exports.createComment = async (req, res) => {
     return;
   }
 
-  console.log(req.body.id);
-  //const review = await Review.findById(req.body.id);
-
   const comment = new Comment({
     username: req.body.username,
     message: req.body.message,
     date: Date.now(),
   });
 
-  //review.comments.push(comment);
-
   // Save comment in the database
   comment
     .save(comment)
     .then((data) => {
-      //res.send(data);
       console.log(data);
     })
     .catch((err) => {
@@ -33,7 +27,7 @@ exports.createComment = async (req, res) => {
         message: err.message || "Some error occurred while creating comment.",
       });
     });
-  
+
   const id = req.body.id;
   Review.updateOne({ _id: id }, { $addToSet: { comments: comment } })
     .then((data) => {
@@ -74,7 +68,7 @@ exports.deleteComment = async (req, res) => {
   const commentId = req.body.data;
   await Review.findByIdAndUpdate(id, { $pull: { comments: commentId } });
 
-  Comment.findByIdAndRemove(commentId, { useFindAndModify: false })
+  Comment.findByIdAndRemove(commentId)
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -88,7 +82,7 @@ exports.deleteComment = async (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete comment with id " + commentId,
+        message: err || "Could not delete comment with id " + commentId,
       });
     });
 };
