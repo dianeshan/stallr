@@ -32,6 +32,11 @@ const Comment = ({ id, comments }) => {
     setForm(value);
   };
 
+  const commentDelete = async (id, commentId) => {
+    await CommentService.deleteComment(id, commentId);
+    window.location.reload();
+  };
+
   const submitComment = () => {
     var data = {
       id: id,
@@ -42,6 +47,7 @@ const Comment = ({ id, comments }) => {
     CommentService.createComment(data)
       .then((response) => {
         setForm("");
+        window.location.reload();
       })
       .catch((e) => {
         console.log(e);
@@ -80,9 +86,7 @@ const Comment = ({ id, comments }) => {
                     <Button
                       variant="outline-danger"
                       style={{ borderStyle: "none" }}
-                      onClick={() =>
-                        CommentService.deleteComment(id, comment.data._id)
-                      }
+                      onClick={() => commentDelete(id, comment.data._id)}
                     >
                       <FontAwesomeIcon icon={faXmark} />
                     </Button>
