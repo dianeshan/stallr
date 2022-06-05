@@ -30,7 +30,7 @@ As a user of this application, you can create reviews for toilets you have been 
 4. Install the necessary packages needed to run the server.
     - `npm install`
 5. Stay in the server directory and run the script
-    - `npm dev`
+    - `npm run dev`
 6. If your browser doesn't automatically open, you can access the application at `http://localhost:3001`.
 
 ### Starting ONLY the server
