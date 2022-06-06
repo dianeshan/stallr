@@ -50,7 +50,7 @@ const Explore = () => {
       temp.push(friendsList[i].data._id);
     }
     return temp;
-  }
+  };
 
   const addFriend = () => {
     UserService.addfriend(yourself.id, currentUser)
@@ -82,7 +82,7 @@ const Explore = () => {
                 >
                   {user.username}
                 </li>
-            ))}
+              ))}
           </ul>
         </div>
         <div className="col-md-6">
@@ -118,12 +118,15 @@ const Explore = () => {
                   {currentUser.bio}
                 </div>
               </Card>
-              { ((cleanArray().includes(currentUser._id) === false) && currentUser._id !== yourself.id) && <Button onClick={addFriend}>Add Friend</Button> }
+              {cleanArray().includes(currentUser._id) === false &&
+                currentUser._id !== yourself.id && (
+                  <Button onClick={addFriend}>Add Friend</Button>
+                )}
             </div>
           ) : (
             <div>
               <br />
-              <p>Click on a user</p>
+              <div>Click on a user</div>
             </div>
           )}
         </div>

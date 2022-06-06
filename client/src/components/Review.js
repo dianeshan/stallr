@@ -74,51 +74,38 @@ const Review = ({
           <Card.Text className="card-username">
             {username}{" "}
             <span className="dateInfo">{new Date(date).toLocaleString()}</span>
-            {currentUser ? (
-              currentUser.username === username ? (
-                <div className="modify-buttons">
-                  <Button
-                    type="submit"
-                    variant="outline-danger"
-                    style={{ borderStyle: "none" }}
-                  >
-                    <FontAwesomeIcon icon={faXmark} onClick={deleteReview} />
-                  </Button>
-                  <Button
-                    variant="outline-info"
-                    style={{ borderStyle: "none" }}
-                  >
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      onClick={handleShow}
-                    />
-                  </Button>
+            {currentUser.username === username && (
+              <div className="modify-buttons">
+                <Button
+                  type="submit"
+                  variant="outline-danger"
+                  style={{ borderStyle: "none" }}
+                >
+                  <FontAwesomeIcon icon={faXmark} onClick={deleteReview} />
+                </Button>
+                <Button variant="outline-info" style={{ borderStyle: "none" }}>
+                  <FontAwesomeIcon icon={faPenToSquare} onClick={handleShow} />
+                </Button>
 
-                  <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Edit Review</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <EditReview
-                        id={id}
-                        location={location}
-                        description={description}
-                        rating={rating}
-                        images={images}
-                      />
-                    </Modal.Body>
-                  </Modal>
-                </div>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Edit Review</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <EditReview
+                      id={id}
+                      location={location}
+                      description={description}
+                      rating={rating}
+                      images={images}
+                    />
+                  </Modal.Body>
+                </Modal>
+              </div>
             )}
           </Card.Text>
         </div>
         <Card.Text>{description}</Card.Text>
-
         <Button
           variant="outline-dark"
           onClick={updateToggle}

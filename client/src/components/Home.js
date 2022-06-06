@@ -32,7 +32,7 @@ const Home = () => {
     ReviewService.getAll()
       .then((response) => {
         setReviews(response.data);
-        console.log(response.data);
+        //console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
