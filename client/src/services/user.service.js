@@ -4,10 +4,6 @@ import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:3000/api/users/";
 
-// const getPublicContent = () => {
-//   return axios.get(API_URL + "all");
-// };
-
 const getAdminBoard = () => {
   return axios.get(API_URL + "admin", { headers: authHeader() });
 };
@@ -24,7 +20,7 @@ const update = (id, data) => {
 
 const getUser = (id) => {
   return axios.get(API_URL + `${id}`);
-}
+};
 
 const addfriend = (id, data) => {
   return axios.post(API_URL + `friends/${id}`, data);

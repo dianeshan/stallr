@@ -79,3 +79,7 @@ Install Node Package Manager (npm). [Helpful Documentation](https://www.npmjs.co
 - Font Awesome Icons
 - React Google Login
 - React Validation
+
+## Possible Errors When Running App
+
+- If trying to sign up with Google and get `Authorization Error, Error 403: org_internal` make sure you are using a UCR email address

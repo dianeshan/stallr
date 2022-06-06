@@ -14,13 +14,8 @@ const upload = (file, onUploadProgress) => {
   });
 };
 
-const getFiles = () => {
-  return axios.get(API_URL + "files");
-};
-
 const AuthService = {
   upload,
-  getFiles,
 };
 
 export default AuthService;
